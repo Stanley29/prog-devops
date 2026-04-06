@@ -29,6 +29,8 @@ Understanding DevOps culture, responsibilities, CI/CD concepts, delivery pipelin
 
 Exploring core networking concepts essential for DevOps: IP addressing, routing, ports, protocols, OSI layers, and packet flow.
 
+👉 Detailed report is available in [`project-02-network-fundamentals/README.md`](project-02-network-fundamentals/README.md).
+
 ---
 
 #### 📂 Project 03 — Linux Essentials & Command-Line Operations
