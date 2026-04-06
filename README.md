@@ -14,86 +14,103 @@ Each project represents a **real‑world DevOps scenario**, implemented and docu
 ### 🚀 Projects Overview
 
 Below is the complete list of projects with short, professional descriptions.
+
 ---
 
 #### 📂 Project 01 — DevOps Methodology & Delivery Lifecycle
 
 Understanding DevOps culture, responsibilities, CI/CD concepts, delivery pipelines, and the collaboration model between Dev, Ops, and QA.
+
 ---
 
 #### 📂 Project 02 — Network Fundamentals: TCP/IP & OSI Model
 
 Exploring core networking concepts essential for DevOps: IP addressing, routing, ports, protocols, OSI layers, and packet flow.
+
 ---
 
 #### 📂 Project 03 — Linux Essentials & Command-Line Operations
 
 Hands‑on Linux practice: file system navigation, permissions, processes, services, logs, and essential administration commands.
+
 ---
 
 #### 📂 Project 04 — Git, GitHub & Application Deployment with WildFly
 
 Version control fundamentals, Git workflows, GitHub usage, and deploying a Java application using the WildFly application server.
+
 ---
 
 #### 📂 Project 05 — CI/CD Foundations with Jenkins
 
 Setting up Jenkins, configuring jobs, automating builds, and understanding the CI/CD pipeline structure.
+
 ---
 
 #### 📂 Project 06 — Jenkins Pipeline as Code
 
 Building declarative and scripted Jenkins pipelines, automating multi‑stage workflows, and integrating testing and deployment steps.
+
 ---
 
 #### 📂 Project 07 — AWS CLI, CloudFormation & Terraform Basics
 
 Working with AWS CLI, provisioning cloud resources using CloudFormation, and introducing Infrastructure as Code with Terraform.
+
 ---
 
 #### 📂 Project 08 — Infrastructure Automation with Terraform & Ansible
 
 Combining Terraform for provisioning and Ansible for configuration management to build reproducible infrastructure environments.
+
 ---
 
 #### 📂 Project 09 — Docker: Modern Containerization Concepts
 
 Understanding containerization, building Docker images, managing containers, and working with registries.
+
 ---
 
 #### 📂 Project 10 — Docker Delivery Pipelines & Advanced Usage
 
 Using Docker Compose, multi‑stage builds, and container‑based delivery workflows for modern application deployment.
+
 ---
 
 #### 📂 Project 11 — GitLab CI: Building CI/CD Pipelines
 
 Creating GitLab CI pipelines, configuring runners, defining jobs and stages, and automating build/test/deploy processes.
+
 ---
 
 #### 📂 Project 12 — GitHub Actions: Automation & CI/CD
 
 Building workflows with GitHub Actions, using triggers, reusable actions, and automating development processes.
+
 ---
 
 #### 📂 Project 13 — Kubernetes Fundamentals
 
 Learning Kubernetes architecture, pods, deployments, services, and cluster‑level concepts.
+
 ---
 
 #### 📂 Project 14 — Kubernetes Services, Volumes & AWS EKS with eksctl
 
 Provisioning EKS clusters, configuring services and volumes, and deploying workloads in AWS Kubernetes environments.
+
 ---
 
 #### 📂 Project 15 — Helm & Kustomize for Kubernetes Packaging
 
 Using Helm charts and Kustomize overlays to package, template, and manage Kubernetes applications.
+
 ---
 
 #### 📂 Project 16 — Advanced Kubernetes Delivery & EKS Operations
 
 Real‑world Kubernetes operations: scaling, updates, rollouts, monitoring, and production‑ready cluster management.
+
 ---
 
 ### 🧭 Repository Structure
