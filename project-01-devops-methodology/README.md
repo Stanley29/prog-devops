@@ -107,8 +107,6 @@ Policy 1 — FullAccessPolicyEC2
 
 ``` JSON:
 
-
-json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -129,8 +127,6 @@ Policy 2 — FullAccessPolicyS3
 
 ``` JSON:
 
-
-json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -151,8 +147,6 @@ Policy 3 — ReadAccessPolicyS3
 
 ``` JSON:
 
-
-json
 {
   "Version": "2012-10-17",
   "Statement": [
