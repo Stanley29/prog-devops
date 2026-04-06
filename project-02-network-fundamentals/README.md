@@ -21,6 +21,7 @@ This hands‑on lab reinforces key DevOps networking concepts:
 This project combines essential cloud, networking, and Linux technologies to demonstrate how real-world DevOps engineers deploy and expose web services on AWS.
 
 🌐 AWS Cloud Services
+
 https://img.shields.io/badge/AWS-EC2-orange
 https://img.shields.io/badge/AWS-VPC-orange
 https://img.shields.io/badge/AWS-Subnets-orange
@@ -28,6 +29,7 @@ https://img.shields.io/badge/AWS-Security_Groups-orange
 https://img.shields.io/badge/AWS-Elastic_IP-orange
 
 🐧 Linux & Networking
+
 https://img.shields.io/badge/Linux-Ubuntu_24.04-blue
 https://img.shields.io/badge/SSH-OpenSSH-green
 https://img.shields.io/badge/Networking-TCP/IP-blue
@@ -35,10 +37,13 @@ https://img.shields.io/badge/Networking-OSI_Model-blue
 https://img.shields.io/badge/Firewall-Security_Groups-yellow
 
 🛠️ Web Server
+
 https://img.shields.io/badge/Apache2-Web_Server-red
 
 📌 Project Status
+
 https://img.shields.io/badge/Status-Completed-success
+
 ---
 
 
@@ -66,6 +71,7 @@ project-02-network-fundamentals/
 ## 🚀 Step‑by‑Step Implementation
 
 Below is the complete workflow used to complete this project, including screenshot points.
+
 ---
 
 ### 1️⃣ Launch EC2 Instance (Ubuntu t2.micro)
@@ -81,6 +87,7 @@ Step 2 — Choose AMI
 Select:
 
 Ubuntu Server 22.04 LTS (or latest LTS available)
+
 ---
 
 Step 3 — Choose Instance Type
@@ -110,6 +117,7 @@ HTTPS	443	0.0.0.0/0
 
 Step 5 — Launch
 Click Launch instance.
+
 ---
 
 Step 6 — Verify Instance is Running
@@ -228,4 +236,5 @@ Installing and managing Apache web server
 Verifying public HTTP access
 
 This lab reinforces core DevOps networking and cloud fundamentals.
+
 ---
