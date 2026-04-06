@@ -44,7 +44,7 @@ project-01-devops-methodology/
     ├── user-s3-full.png
     └── user-s3-read.png
 	
-	``` 
+``` 
 	
 	
 ## 🚀 Step‑by‑Step Implementation
