@@ -22,27 +22,28 @@ This project combines essential cloud, networking, and Linux technologies to dem
 
 🌐 AWS Cloud Services
 
-https://img.shields.io/badge/AWS-EC2-orange
-https://img.shields.io/badge/AWS-VPC-orange
-https://img.shields.io/badge/AWS-Subnets-orange
-https://img.shields.io/badge/AWS-Security_Groups-orange
-https://img.shields.io/badge/AWS-Elastic_IP-orange
+![AWS-EC2](https://img.shields.io/badge/AWS-EC2-orange)
+![AWS-VPC](https://img.shields.io/badge/AWS-VPC-orange)
+![AWS-Subnets](https://img.shields.io/badge/AWS-Subnets-orange)
+![AWS-Security_Groups](https://img.shields.io/badge/AWS-Security_Groups-orange)
+![AWS-Elastic_IP](https://img.shields.io/badge/AWS-Elastic_IP-orange)
+
 
 🐧 Linux & Networking
 
-https://img.shields.io/badge/Linux-Ubuntu_24.04-blue
-https://img.shields.io/badge/SSH-OpenSSH-green
-https://img.shields.io/badge/Networking-TCP/IP-blue
-https://img.shields.io/badge/Networking-OSI_Model-blue
-https://img.shields.io/badge/Firewall-Security_Groups-yellow
+![Linux-Ubuntu_24.04](https://img.shields.io/badge/Linux-Ubuntu_24.04-blue)
+![SSH-OpenSSH](https://img.shields.io/badge/SSH-OpenSSH-green)
+![Networking-TCP/IP](https://img.shields.io/badge/Networking-TCP/IP-blue)
+![Networking-OSI_Model](https://img.shields.io/badge/Networking-OSI_Model-blue)
+![Firewall-Security_Groups](https://img.shields.io/badge/Firewall-Security_Groups-yellow)
 
 🛠️ Web Server
 
-https://img.shields.io/badge/Apache2-Web_Server-red
+![Apache2-Web_Server](https://img.shields.io/badge/Apache2-Web_Server-red)
 
 📌 Project Status
 
-https://img.shields.io/badge/Status-Completed-success
+![Status-Completed](https://img.shields.io/badge/Status-Completed-success)
 
 ---
 
@@ -105,9 +106,13 @@ Step 4 — Create or Edit Security Group
 Add inbound rules:
 
 Type	Port	Source
-SSH	22	My IP
-HTTP	80	0.0.0.0/0
-HTTPS	443	0.0.0.0/0
+
+SSH	    22	     My IP
+
+HTTP	80	     0.0.0.0/0
+
+HTTPS	443	     0.0.0.0/0
+
 
 
 ![images/03_security_group_rules.png](images/03_security_group_rules.png)
