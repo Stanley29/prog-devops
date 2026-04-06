@@ -106,7 +106,7 @@ Below is the full workflow used to complete this project.
 Policy 1 — FullAccessPolicyEC2
 
 ``` JSON:
-Copy code
+
 
 json
 {
@@ -128,7 +128,7 @@ json
 Policy 2 — FullAccessPolicyS3
 
 ``` JSON:
-Copy code
+
 
 json
 {
@@ -150,7 +150,7 @@ json
 Policy 3 — ReadAccessPolicyS3
 
 ``` JSON:
-Copy code
+
 
 json
 {
