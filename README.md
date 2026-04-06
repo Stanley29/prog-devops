@@ -4,16 +4,18 @@ DevOps engineering portfolio based on real-world projects inspired by Prog Acade
 
 ## 📘 DevOps Engineering Portfolio
 **Practical DevOps Projects Inspired by Prog Academy Curriculum**
+
 Welcome to my **DevOps engineering portfolio**, a structured collection of hands‑on projects that demonstrate my skills across the full DevOps lifecycle — from Linux and networking fundamentals to CI/CD, cloud infrastructure, automation, containers, and Kubernetes.
 
-This repository is organized into **projects**, not lessons.
+This repository is organized into **projects**.
+
 Each project represents a **real‑world DevOps scenario**, implemented and documented as a standalone portfolio chapter.
 
 ---
 
 ### 🚀 Projects Overview
 
-Below is the complete list of projects with short, professional descriptions.
+Below is the complete list of projects with short descriptions.
 
 ---
 
