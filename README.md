@@ -39,6 +39,8 @@ Exploring core networking concepts essential for DevOps: IP addressing, routing,
 
 Hands‑on Linux practice: file system navigation, permissions, processes, services, logs, and essential administration commands.
 
+👉 Detailed report is available in [`project-03-linux-essentials/README.md`](project-03-linux-essentials/README.md).
+
 ---
 
 #### 📂 Project 04 — Git, GitHub & Application Deployment with WildFly
