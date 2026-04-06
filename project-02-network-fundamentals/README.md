@@ -105,13 +105,13 @@ t2.micro (Free Tier eligible)
 Step 4 — Create or Edit Security Group
 Add inbound rules:
 
-Type	Port	Source
+Type    	Port    	Source
 
-SSH	    22	     My IP
+SSH  	    22  	     My IP
 
-HTTP	80	     0.0.0.0/0
+HTTP    	80  	     0.0.0.0/0
 
-HTTPS	443	     0.0.0.0/0
+HTTPS   	443  	     0.0.0.0/0
 
 
 
