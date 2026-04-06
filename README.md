@@ -47,6 +47,8 @@ Hands‑on Linux practice: file system navigation, permissions, processes, servi
 
 Version control fundamentals, Git workflows, GitHub usage, and deploying a Java application using the WildFly application server.
 
+👉 Detailed report is available in [`project-04-git-github-wildfly/README.md`](project-04-git-github-wildfly/README.md).
+
 ---
 
 #### 📂 Project 05 — CI/CD Foundations with Jenkins
