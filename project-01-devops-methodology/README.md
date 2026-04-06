@@ -27,6 +27,35 @@ All actions were performed under a dedicated Administrator IAM user, following b
 
 ✔ Document everything with screenshots
 
+## 🏷️ Technologies and Tools Used in This Project
+
+This project focuses on AWS Identity and Access Management (IAM) fundamentals — a core building block of secure DevOps workflows.
+It demonstrates how permissions, roles, groups, and users are structured in real cloud environments.
+
+🌐 AWS Cloud Services
+
+![AWS-IAM](https://img.shields.io/badge/AWS-IAM-orange)
+![AWS-Policies](https://img.shields.io/badge/AWS-Policies-orange)
+![AWS-Roles](https://img.shields.io/badge/AWS-Roles-orange)
+![AWS-User_Groups](https://img.shields.io/badge/AWS-User_Groups-orange)
+![AWS-Users-orange](https://img.shields.io/badge/AWS-Users-orange)
+
+🔐 Identity & Access Management
+
+![IAM-Access_Control](https://img.shields.io/badge/IAM-Access_Control-blue)
+![IAM-Permissions](https://img.shields.io/badge/IAM-Permissions-blue)
+![IAM-Security_Best_Practices](https://img.shields.io/badge/IAM-Security_Best_Practices-blue)
+
+🛠️ DevOps & Cloud Foundations
+
+![DevOps-Cloud_Security](https://img.shields.io/badge/DevOps-Cloud_Security-green)
+![DevOps-User_Management](https://img.shields.io/badge/DevOps-User_Management-green)
+
+📋 Project Status
+
+![Status-Completed](https://img.shields.io/badge/Status-Completed-success)
+
+---
 
 ## 📂 Repository Structure
 
