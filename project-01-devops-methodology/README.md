@@ -16,11 +16,17 @@ All actions were performed under a dedicated Administrator IAM user, following b
 ## 🧭 Project Objectives
 
 ✔ Create an IAM Administrator user
+
 ✔ Create 3 custom IAM policies
+
 ✔ Create 3 IAM roles
+
 ✔ Create 3 IAM groups
+
 ✔ Create 3 IAM users and assign them to groups
+
 ✔ Document everything with screenshots
+
 
 ## 📂 Repository Structure
 

@@ -21,7 +21,7 @@ Below is the complete list of projects with short, professional descriptions.
 
 Understanding DevOps culture, responsibilities, CI/CD concepts, delivery pipelines, and the collaboration model between Dev, Ops, and QA.
 
-👉 Detailed report is available in [`project-01-devops-methodology/Readme.md`](project-01-devops-methodology/Readme.md).
+👉 Detailed report is available in [`project-01-devops-methodology/README.md`](project-01-devops-methodology/README.md).
 
 ---
 
