@@ -274,7 +274,7 @@ This task required:
 ### 📜 Script 1 — create_users_groups.sh
 
 Located in: 
-scripts/create_users_groups.sh
+ [`scripts/create_users_groups.sh`](scripts/create_users_groups.sh)
 
 Creates:
 
@@ -296,7 +296,7 @@ Creates:
 ### 📜 Script 2 — install_apache.sh
 
 Located in: 
-scripts/install_apache.sh
+ [`scripts/install_apache.sh`](scripts/install_apache.sh)
 
 Features:
 
@@ -316,7 +316,7 @@ Features:
 ### 📜 Script 3 — install_lamp.sh
 
 Located in: 
-scripts/install_lamp.sh
+ [`scripts/install_lamp.sh`](scripts/install_lamp.sh)
 
 Installs:
 
