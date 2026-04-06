@@ -6,6 +6,7 @@
 ![Linux](https://img.shields.io/badge/Linux-Ubuntu%2022.04-green)
 ![AWS](https://img.shields.io/badge/AWS-EC2-yellow)
 ![DevOps](https://img.shields.io/badge/DevOps-Automation-lightgrey)
+![Status](https://img.shields.io/badge/Status-Completed-success)
 
 ---
 
