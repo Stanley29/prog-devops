@@ -71,7 +71,7 @@ project-05-jenkins-ci-cd/
 │   ├── 28_java_version_app_server.png
 │   ├── 29_tomcat_installed_status.png
 │   ├── 30_tomcat_default_page.png
-│   ├── 31_app_server_java_version.png
+│   ├── 31_tomcat_webapps_directory
 │   ├── 32_jenkins_server_ssh_to_app_server_ping_successful.png
 │   ├── 33_jenkins_new_freestyle_job.png
 │   ├── 34_job_git_config.png
@@ -116,24 +116,31 @@ GitHub → Jenkins (EC2) → SSH/SCP → App Server (EC2) → Tomcat → Browser
 ### 5.1. Jenkins Server Setup
 
 Launching EC2 instance
+
 ![01_ec2_launch_instances](images/01_ec2_launch_instances.png)
 
 Instance configuration
+
 ![02_jenkins_instance_basic_settings](images/02_jenkins_instance_basic_settings.png)
 
 Selecting SSH key pair
+
 ![03_select_key_pair](images/03_select_key_pair.png)
 
 Security Group configuration
+
 ![04_security_group_jenkins](images/04_security_group_jenkins.png)
 
 Instance running
+
 ![05_jenkins_instance_running](images/05_jenkins_instance_running.png)
 
 Public IP
+
 ![06_instance_public_ip](images/06_instance_public_ip.png)
 
 SSH connection
+
 ![07_ssh_connected_jenkins_server](images/07_ssh_connected_jenkins_server.png)
 
 Command:
@@ -154,7 +161,9 @@ java -version
 ``` 
 
 Installing Jenkins
+
 ![08_java_version_installed](images/08_java_version_installed.png)
+
 
 ![08_jenkins_installed_and_running](images/08_jenkins_installed_and_running.png)
 
@@ -175,24 +184,31 @@ sudo systemctl start jenkins
 ``` 
 
 Initial admin password
+
 ![10_initial_admin_password](images/10_initial_admin_password.png)
 
 Unlock Jenkins
+
 ![11_jenkins_unlock_screen](images/11_jenkins_unlock_screen.png)
 
 Jenkins unlocked
+
 ![12_jenkins_unlocked](images/12_jenkins_unlocked.png)
 
 Plugin installation
+
 ![14_plugins_installing](images/14_plugins_installing.png)
 
 Creating admin user
+
 ![15_create_admin_user](images/15_create_admin_user.png)
 
 Jenkins dashboard
+
 ![17_jenkins_dashboard](images/17_jenkins_dashboard.png)
 
 Main dashboard
+
 ![18_jenkins_main_dashboard](images/18_jenkins_main_dashboard.png)
 
 ![19_new_item](images/19_new_item.png)
@@ -205,18 +221,23 @@ Main dashboard
 ### 5.2. Application Server Setup
 
 Launching EC2 instance
+
 ![21_app_instance_basic_settings](images/21_app_instance_basic_settings.png)
 
 Security Group
+
 ![22_app_security_group](images/22_app_security_group.png)
 
 Instance running
+
 ![23_app_instance_running](images/23_app_instance_running.png)
 
 Public IP
+
 ![24_app_instance_public_ip](images/24_app_instance_public_ip.png)
 
 SSH connection
+
 ![25_ssh_connected_app_server](images/25_ssh_connected_app_server.png)
 
 Command:
@@ -226,6 +247,7 @@ ssh -i HrSolution_Key_Pair.pem ubuntu@56.228.15.177
 ``` 
 
 Installing Apache
+
 ![26_apache_installed_status](images/26_apache_installed_status.png)
 
 Commands:
@@ -236,12 +258,15 @@ sudo systemctl start apache2
 ``` 
 
 Apache default page
+
 ![27_apache_default_page](images/27_apache_default_page.png)
 
 Installing Java
+
 ![28_java_version_app_server](images/28_java_version_app_server.png)
 
 Installing Tomcat
+
 ![29_tomcat_installed_status](images/29_tomcat_installed_status.png)
 
 Command:
@@ -252,26 +277,33 @@ sudo systemctl start tomcat10
 ``` 
 
 Tomcat default page
+
 ![30_tomcat_default_page](images/30_tomcat_default_page.png)
 
 Java verification
-![31_app_server_java_version](images/31_app_server_java_version.png)
+
+![31_31_tomcat_webapps_directory](images/31_app_server_java_version.png)
 
 Jenkins → App Server SSH test
+
 ![32_jenkins_server_ssh_to_app_server_ping_successful](images/32_jenkins_server_ssh_to_app_server_ping_successful.png)
 
 ## 6. B — Jenkins Freestyle Job Setup
 
 Creating Freestyle job
+
 ![33_jenkins_new_freestyle_job](images/33_jenkins_new_freestyle_job.png)
 
 GitHub repository configuration
+
 ![34_job_git_config](images/34_job_git_config.png)
 
 Maven build step
+
 ![35_job_maven_build_step](images/35_job_maven_build_step.png)
 
 Archiving artifacts
+
 ![36_job_archive_artifacts](images/36_job_archive_artifacts.png)
 
 ---
@@ -280,18 +312,23 @@ Archiving artifacts
 ## 7. C — Pipeline-as-Code (Jenkinsfile)
 
 Pipeline job overview
+
 ![37_pipeline_job_overview](images/37_pipeline_job_overview.png)
 
 Stages view
+
 ![38_pipeline_stages_view](images/38_pipeline_stages_view.png)
 
 Console output (start)
+
 ![39_console_output_start](images/39_console_output_start.png)
 
 Console output (success)
+
 ![40_console_output_success](images/40_console_output_success.png)
 
 Generated WAR artifact
+
 ![41_jenkins_artifact_war](images/41_jenkins_artifact_war.png)
 
 ---
@@ -300,33 +337,43 @@ Generated WAR artifact
 ## 8. D — GitHub Integration + Deployment
 
 GitHub SSH key added
+
 ![42_github_ssh_key_added](images/42_github_ssh_key_added.png)
 
 Jenkinsfile in repository
+
 ![43_github_jenkinsfile](images/43_github_jenkinsfile.png)
 
 Jenkins credentials (github‑ssh)
+
 ![44_jenkins_credentials_github_ssh](images/44_jenkins_credentials_github_ssh.png)
 
 deploy.sh on App Server
+
 ![45_deploy_script_on_app_server](images/45_deploy_script_on_app_server.png)
 
 Jenkins SSH connection to App Server
+
 ![46_jenkins_ssh_to_app_server](images/46_jenkins_ssh_to_app_server.png)
 
 Tomcat webapps directory
+
 ![47_tomcat_webapps_listing](images/47_tomcat_webapps_listing.png)
 
 Application running in browser
+
 ![48_app_running_in_browser](images/48_app_running_in_browser.png)
 
 Jenkins credentials (app-server-ssh)
+
 ![49_jenkins_credentials_app_server_ssh](images/49_jenkins_credentials_app_server_ssh.png)
 
 Updated Jenkinsfile
+
 ![50_github_jenkinsfile_updated](images/50_github_jenkinsfile_updated.png)
 
 Full deploy.sh
+
 ![51_deploy_script_full_view](images/51_deploy_script_full_view.png)
 
 ---
