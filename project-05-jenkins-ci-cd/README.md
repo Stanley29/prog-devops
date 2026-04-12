@@ -282,7 +282,7 @@ Tomcat default page
 
 Java verification
 
-![31_31_tomcat_webapps_directory](images/31_app_server_java_version.png)
+![31_tomcat_webapps_directory](images/31_app_server_java_version.png)
 
 Jenkins → App Server SSH test
 
