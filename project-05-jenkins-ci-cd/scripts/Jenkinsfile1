@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    credentialsId: 'github-ssh',
+                    url: 'git@github.com:Stanley29/demo-webapp.git'
+            }
+        }
+
+        stage('Build WAR') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy to App Server') {
+            steps {
+                sshagent(['app-server-ssh']) {
+                    sh '''
+                        echo "Copying WAR to App Server..."
+                        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/demo-webapp.war ubuntu@56.228.15.177:/tmp/demo-webapp.war
+
+                        echo "Running deploy script..."
+                        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@56.228.15.177 sudo /opt/deploy.sh
+                    '''
+                }
+            }
+        }
+    }
+}

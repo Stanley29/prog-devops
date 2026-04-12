@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    credentialsId: 'github-ssh',
+                    url: 'git@github.com:Stanley29/demo-webapp.git'
+            }
+        }
+
+        stage('Build WAR') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy Directly') {
+            steps {
+                sshagent(['app-server-ssh']) {
+                    sh '''
+                        ssh ubuntu@56.228.15.177 "sudo systemctl stop tomcat10"
+                        scp target/demo-webapp.war ubuntu@56.228.15.177:/var/lib/tomcat10/webapps/
+                        ssh ubuntu@56.228.15.177 "sudo systemctl start tomcat10"
+                    '''
+                }
+            }
+        }
+    }
+}

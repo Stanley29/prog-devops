@@ -55,6 +55,8 @@ Version control fundamentals, Git workflows, GitHub usage, and deploying a Java 
 
 Setting up Jenkins, configuring jobs, automating builds, and understanding the CI/CD pipeline structure.
 
+👉 Detailed report is available in [`project-05-jenkins-ci-cd/README.md`](project-05-jenkins-ci-cd/README.md).
+
 ---
 
 #### 📂 Project 06 — Jenkins Pipeline as Code
