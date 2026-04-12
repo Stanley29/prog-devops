@@ -47,7 +47,7 @@ Hands‑on Linux practice: file system navigation, permissions, processes, servi
 
 Version control fundamentals, Git workflows, GitHub usage, and deploying a Java application using the WildFly application server.
 
-👉 Detailed report is available in [`demo-webapp`](https://github.com/Stanley29/demo-webapp).
+👉 Detailed report is available in [`project-04-git-github-wildfly/README.md`](project-04-git-github-wildfly/README.md).
 
 ---
 
@@ -55,7 +55,7 @@ Version control fundamentals, Git workflows, GitHub usage, and deploying a Java 
 
 Setting up Jenkins, configuring jobs, automating builds, and understanding the CI/CD pipeline structure.
 
-Testing repo is here: - [`project-05-jenkins-ci-cd/README.md`](project-05-jenkins-ci-cd/README.md).
+Testing repo is here: - [`demo-webapp`](https://github.com/Stanley29/demo-webapp).
 
 👉 Detailed report is available in [`project-05-jenkins-ci-cd/README.md`](project-05-jenkins-ci-cd/README.md).
 
