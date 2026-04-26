@@ -71,6 +71,8 @@ Building declarative and scripted Jenkins pipelines, automating multi‑stage wo
 
 Working with AWS CLI, provisioning cloud resources using CloudFormation, and introducing Infrastructure as Code with Terraform.
 
+👉 Detailed report is available in [`project-07-terraform/README.md`](project-07-terraform/README.md).
+
 ---
 
 #### 📂 Project 08 — Infrastructure Automation with Terraform & Ansible
