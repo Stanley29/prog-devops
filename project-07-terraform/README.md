@@ -134,10 +134,6 @@ Initialization:
 ```Code
 terraform init
 ```
-
-
-Screenshots:  
-![02_main_tf_content.png](images/02_main_tf_content.png)
   
 
 ![03_terraform_init.png](images/03_terraform_init.png)
