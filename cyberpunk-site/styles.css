@@ -1,0 +1,95 @@
+body {
+    background: #000;
+    color: #0affff;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    padding: 40px;
+    color: #f9f002;
+    text-shadow: 0 0 10px #f9f002;
+}
+
+.hero img {
+    width: 100%;
+    display: block;
+}
+
+.content {
+    padding: 40px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.small-img {
+    width: 100%;
+    margin-top: 20px;
+    border: 2px solid #f9f002;
+    box-shadow: 0 0 20px #f9f002;
+}
+
+.cyberpunk-text {
+    font-family: 'Courier New', monospace;
+    color: #f9f002;
+    text-shadow:
+        0 0 5px #f9f002,
+        0 0 10px #f9f002,
+        0 0 20px #ff00ff,
+        0 0 30px #ff00ff;
+    letter-spacing: 2px;
+}
+
+.neon-blue {
+    font-family: 'Courier New', monospace;
+    color: #00eaff;
+    text-shadow:
+        0 0 5px #00eaff,
+        0 0 10px #00eaff,
+        0 0 20px #0088ff,
+        0 0 40px #0088ff;
+}
+
+.glitch {
+    font-family: 'Courier New', monospace;
+    font-size: 48px;
+    color: #0affff;
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.glitch::before {
+    color: #ff00c8;
+    left: 2px;
+    text-shadow: -2px 0 #ff00c8;
+    clip-path: inset(0 0 50% 0);
+}
+
+.glitch::after {
+    color: #00fff2;
+    left: -2px;
+    text-shadow: -2px 0 #00fff2;
+    clip-path: inset(50% 0 0 0);
+}
+
+.cyber-font {
+    font-family: 'Orbitron', sans-serif;
+    color: #f9f002;
+    text-shadow: 0 0 10px #f9f002;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+}
