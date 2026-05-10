@@ -65,6 +65,10 @@ Testing repo is here: - [`demo-webapp`](https://github.com/Stanley29/demo-webapp
 
 Building declarative and scripted Jenkins pipelines, automating multi‑stage workflows, and integrating testing and deployment steps.
 
+Testing repo is here: - [`cyberpunk-webapp`](https://github.com/Stanley29/cyberpunk-webapp).
+
+👉 Detailed report is available in [`project-06-jenkins-ci-cd/README.md`](project-06-jenkins-ci-cd/README.md).
+
 ---
 
 #### 📂 Project 07 — AWS CLI, CloudFormation & Terraform Basics
