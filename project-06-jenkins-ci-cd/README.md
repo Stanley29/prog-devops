@@ -1,12 +1,13 @@
 # Project 06 – Jenkins CI/CD with SSH Slaves and WildFly on AWS
 
-https://img.shields.io/badge/Jenkins-CI%2FCD-blue
-https://img.shields.io/badge/Java-21-orange
-https://img.shields.io/badge/WildFly-Application%20Server-red
-https://img.shields.io/badge/Linux-Ubuntu%2022.04-green
-https://img.shields.io/badge/AWS-EC2-yellow
-https://img.shields.io/badge/DevOps-Automation-lightgrey
-https://img.shields.io/badge/Status-Completed-success
+![Jenkins CI/CD](https://img.shields.io/badge/Jenkins-CI%2FCD-blue)
+![Java 21](https://img.shields.io/badge/Java-21-orange)
+![WildFly Application Server](https://img.shields.io/badge/WildFly-Application%20Server-red)
+![Ubuntu Linux 22.04](https://img.shields.io/badge/Linux-Ubuntu%2022.04-green)
+![AWS EC2](https://img.shields.io/badge/AWS-EC2-yellow)
+![DevOps Automation](https://img.shields.io/badge/DevOps-Automation-lightgrey)
+![Status Completed](https://img.shields.io/badge/Status-Completed-success)
+
 
 ## Project Overview
 This project implements a complete CI/CD pipeline using Jenkins, two SSH-based build agents, and a WildFly application server deployed on AWS EC2.
@@ -1099,8 +1100,6 @@ After the job completes, the deployed application should be accessible at:
 ```Code
 http://13.48.29.172:8080/myapp/
 ```
-
-![27_15_jenkins_build_now.png](images/27_15_jenkins_build_now.png)
 
 
 
