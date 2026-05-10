@@ -1,0 +1,38 @@
+pipeline {
+    agent none
+
+    environment {
+        WILDFLY_HOST = credentials('wildfly_host')
+        WILDFLY_USER = credentials('wildfly_user')
+        WILDFLY_KEY  = credentials('wildfly_ssh_key')
+    }
+
+    stages {
+        stage('Checkout') {
+            agent { label 'slave-1' }
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            agent { label 'slave-1' }
+            steps {
+                echo "Build stage placeholder"
+                sh 'ls -la'
+            }
+        }
+
+        stage('Deploy to WildFly') {
+            agent { label 'slave-2' }
+            steps {
+                echo "Deploying to WildFly"
+                sh """
+                echo "Example deploy step"
+                # scp -i  target/myapp.war @:/opt/wildfly/standalone/deployments/
+                """
+
+            }
+        }
+    }
+}
