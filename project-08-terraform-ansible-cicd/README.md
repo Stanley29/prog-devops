@@ -90,7 +90,7 @@ o	Production grade Bash scripts (backup & restore)
 o	Directory tree and supporting files
 
 Screenshot
-![01_powershell_script_run.png](01_powershell_script_run.png)
+![01_powershell_script_run.png](images/01_powershell_script_run.png)
 
 
 ### 1.2 Terraform Infrastructure
@@ -151,21 +151,21 @@ o	Restore logic with service stop/start
 
 This step prepares the environment for running terraform init and subsequent infrastructure deployment.
 
-![02_cd_terraform_directory.png](02_cd_terraform_directory.png)
+![02_cd_terraform_directory.png](images/02_cd_terraform_directory.png)
 
 
 ### 2.2 Run terraform init to initialize the Terraform working directory. 
 
 This command downloads required providers, prepares backend configuration, and sets up the environment for infrastructure deployment.
 
-![03_terraform_init.png](03_terraform_init.png)
+![03_terraform_init.png](images/03_terraform_init.png)
 
 
 ### 2.3 Run terraform apply to provision the complete AWS infrastructure. 
 
 This step creates all EC2 instances, security groups, the S3 bucket, and generates the Ansible inventory file. After completion, Terraform outputs the public IP addresses required for configuration.
 
-![04_terraform_apply.png](04_terraform_apply.png)
+![04_terraform_apply.png](images/04_terraform_apply.png)
 
 
 ### 2.4 Fix the incorrect absolute paths in the inventory-gen.tf file.
@@ -183,7 +183,7 @@ Replace its content with the corrected version
 
 Save the file
 
-![09_inventory_gen_tf_fix.png](09_inventory_gen_tf_fix.png)
+![09_inventory_gen_tf_fix.png](images/09_inventory_gen_tf_fix.png)
 
 
 ### 2.5 Verify the contents of the newly generated inventory.ini file located in terraform/generated.
@@ -196,17 +196,17 @@ Command executed in this step:
 cat generated/inventory.ini
 ```
 
-![11_inventory_file_corrected.png](11_inventory_file_corrected.png)
+![11_inventory_file_corrected.png](images/11_inventory_file_corrected.png)
 
 
 ### 2.6 Connect to the Jenkins Master using the correct private key that matches the AWS Key Pair HrSolution_Key_Pair.
 
-![17_ssh_master_correct_key.png](17_ssh_master_correct_key.png)
+![17_ssh_master_correct_key.png](images/17_ssh_master_correct_key.png)
 
 
 ### 2.7 Verify SSH access to the Jenkins Slave instance to ensure the machine is reachable and ready for Ansible configuration.
 
-![19_ssh_slave_connection.png](19_ssh_slave_connection.png)
+![19_ssh_slave_connection.png](images/19_ssh_slave_connection.png)
 
 
 ### 2.8 Verify SSH access to the WildFly Application Server
@@ -215,7 +215,7 @@ This step verifies successful SSH access to the WildFly EC2 instance.
 A correct connection confirms that the server is running, reachable over the network, and authenticated using the correct AWS key pair.
 Seeing the Ubuntu banner and the shell prompt indicates that the machine is ready for Ansible configuration.
 
-![23_ssh_wildfly_connection.png](23_ssh_wildfly_connection.png)
+![23_ssh_wildfly_connection.png](images/23_ssh_wildfly_connection.png)
 
 
 
@@ -230,7 +230,7 @@ This step verifies that the Ansible project directory inside the WSL Ubuntu envi
 A correct directory structure confirms that the automation environment is properly initialized and ready for executing Ansible playbooks against the provisioned EC2 instances.
 Seeing the expected folders (such as ansible, terraform, scripts, and images) indicates that the project was generated correctly and that the working directory is prepared for further configuration steps.
 
-![26_ansible_directory_structure.png](26_ansible_directory_structure.png)
+![26_ansible_directory_structure.png](images/26_ansible_directory_structure.png)
 
 
 ### 3.3 Issues with SSH Access and Incorrect Key Pair
@@ -305,7 +305,7 @@ The playbook finished successfully with zero failures, confirming that every rol
 
 The final PLAY RECAP showed that all hosts were reachable, all tasks executed as expected, and the infrastructure is now fully operational and ready for CI/CD operations.
 
-![30_ansible_playbook_success.png](30_ansible_playbook_success.png)  
+![30_ansible_playbook_success.png](images/30_ansible_playbook_success.png)  
 
 
 This screenshot should display the final successful output of the playbook, including the ok, changed, and failed=0 status for each server.
@@ -364,7 +364,7 @@ openssl version
 
 The default SSL site was enabled, and OpenSSL 3.0.2 was available on the system.
 
-![27_jenkins_master_software_verification.png](27_jenkins_master_software_verification.png)  
+![27_jenkins_master_software_verification.png](images/27_jenkins_master_software_verification.png)  
 
 
 ### 3.8 Jenkins Slave – Software Verification
@@ -406,7 +406,7 @@ hostname
 
 The hostname matched the internal EC2 name, confirming that the instance is reachable and properly configured.
 
-![28_jenkins_slave_software_verification.png](28_jenkins_slave_software_verification.png)  
+![28_jenkins_slave_software_verification.png](images/28_jenkins_slave_software_verification.png)  
 
 
 ### 3.9 WildFly Web Server – Software Verification
@@ -458,7 +458,7 @@ openssl version
 
 The default SSL site was enabled, and OpenSSL 3.0.2 was available on the system, confirming that HTTPS support was configured properly.
 
-![29_wildfly_server_software_verification.png](29_wildfly_server_software_verification.png)  
+![29_wildfly_server_software_verification.png](images/29_wildfly_server_software_verification.png)  
 
 
 ### 3.10 Web Browser Verification (All EC2 Instances)
@@ -482,7 +482,7 @@ After confirming the exception, the Jenkins login page was successfully loaded, 
 
 -Jenkins is running and accessible externally
 
-![31_jenkins_master_browser_access.png](31_jenkins_master_browser_access.png)    
+![31_jenkins_master_browser_access.png](images/31_jenkins_master_browser_access.png)    
 
 
 #### 3.10.2 Jenkins Slave – Web Browser Verification
@@ -504,7 +504,7 @@ The browser returned “Connection refused”, which is expected because:
 
 This confirms that the security group rules and instance configuration are correct.
 
-![32_jenkins_slave_browser_check.png](32_jenkins_slave_browser_check.png) 
+![32_jenkins_slave_browser_check.png](images/32_jenkins_slave_browser_check.png) 
 
 
 #### 3.10.3 WildFly Web Server – Web Browser Verification
@@ -531,7 +531,7 @@ https://51.21.180.223:8443
 
 A browser warning appeared due to the self‑signed certificate, but after confirming the exception, the secure WildFly page loaded correctly.
 
-![33_wildfly_browser_access.png](33_wildfly_browser_access.png)  
+![33_wildfly_browser_access.png](images/33_wildfly_browser_access.png)  
 
 
 📘 Section: Jenkins JENKINS_HOME Backup to AWS S3
@@ -620,7 +620,7 @@ Output:
 
 This confirms that the backup process is fully operational.
 
-![34_jenkins_home_backup_to_s3.png](34_jenkins_home_backup_to_s3.png) 
+![34_jenkins_home_backup_to_s3.png](images/34_jenkins_home_backup_to_s3.png) 
 
 
 
