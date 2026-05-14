@@ -91,6 +91,8 @@ Combining Terraform for provisioning and Ansible for configuration management to
 
 Understanding containerization, building Docker images, managing containers, and working with registries.
 
+👉 Detailed report is available in [`project-09-docker-mongo-node-api/README.md`](project-09-docker-mongo-node-api/README.md).
+
 ---
 
 #### 📂 Project 10 — Docker Delivery Pipelines & Advanced Usage
