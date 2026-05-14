@@ -83,10 +83,15 @@ project-08-terraform-ansible-cicd/
 ### 1.1 Project Initialization
 
 •	Created a fully automated PowerShell initializer (init_project_08.ps1).
+
 •	Script generates the entire project structure:
+
 --	Terraform configuration
+
 --	Ansible playbooks and roles
+
 --	Production grade Bash scripts (backup & restore)
+
 --	Directory tree and supporting files
 
 Screenshot
@@ -96,50 +101,89 @@ Screenshot
 ### 1.2 Terraform Infrastructure
 
 •	Implemented AWS infrastructure provisioning:
+
 --	3 EC2 instances:
+
 ---	Jenkins Master
+
 ---	Jenkins Slave
+
 ---	WildFly Application Server
+
 --	Security Groups with correct inbound/outbound rules.
+
 --	S3 bucket for Jenkins home backup.
+
 --	AMI discovery for Ubuntu 22.04.
+
 --	Inventory generator using local_file + template.
+
 •	All Terraform files validated and generated automatically.
+
 
 ### 1.3 Ansible Configuration
 
 •	Created a complete Ansible automation stack:
+
 --	Jenkins Master role:
+
 ---	Java installation
+
 ---	Jenkins installation
+
 ---	AWS CLI
+
 ---	Automatic restore from S3 (if backup exists)
+
 --	Jenkins Slave role:
+
 ---	Java installation
+
 ---	Jenkins user setup
+
 --	WildFly role:
+
 ---	Java installation
+
 ---	WildFly download, unpack, systemd service
+
 --	Apache role:
+
 ---	Apache installation and enablement
+
 --	SSL role:
+
 ---	Self signed certificate generation
+
 ---	SSL site activation
+
 --	Backup role:
+
 ---	Deployment of backup script
+
 ---	Cron job for periodic S3 backups
+
 
 ### 1.4 Bash Backup & Restore Scripts
 
 •	Implemented production grade scripts with:
+
 --	ISO 8601 timestamps
+
 --	Central log file /var/log/jenkins_backup.log
+
 --	Error handling (set -euo pipefail)
+
 --	S3 validation
+
 --	Jenkins service checks
+
 --	Archive creation and upload
+
 --	Restore logic with service stop/start
+
 •	Scripts generated safely via Add-Content (PowerShell safe).
+
 
 ### 1.5 Successful Execution
 
