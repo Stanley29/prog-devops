@@ -288,7 +288,7 @@ The issue was resolved by adding a proper handler:
     name: wildfly
     state: restarted
     daemon_reload: yes
-	``` 
+``` 
 	
 After adding the handler, the WildFly service was successfully enabled and started.
 
