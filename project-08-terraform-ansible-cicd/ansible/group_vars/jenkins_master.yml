@@ -1,0 +1,2 @@
+jenkins_s3_bucket_name: jenkins-home-backup-bucket-08
+jenkins_home_path: /var/lib/jenkins

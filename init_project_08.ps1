@@ -1,9 +1,7 @@
-# ================================
-# init_project_08.ps1
-# Project generator for:
-# project-08-terraform-ansible-cicd
-# Terraform + Ansible + Jenkins + WildFly + S3 backup
-# ================================
+# ============================================
+# init_project_08.ps1 — PART 1 / 5
+# Project: project-08-terraform-ansible-cicd
+# ============================================
 
 $projectRoot = Join-Path $PSScriptRoot "project-08-terraform-ansible-cicd"
 Write-Host "Creating project: $projectRoot" -ForegroundColor Cyan
@@ -11,7 +9,9 @@ Write-Host "Creating project: $projectRoot" -ForegroundColor Cyan
 # Create root folder
 New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
 
+# --------------------------------------------
 # Helper: write UTF-8 without BOM
+# --------------------------------------------
 function Write-Utf8NoBom {
     param(
         [string]$Path,
@@ -21,7 +21,9 @@ function Write-Utf8NoBom {
     [System.IO.File]::WriteAllBytes($Path, $bytes)
 }
 
+# --------------------------------------------
 # Helper: convert CRLF → LF
+# --------------------------------------------
 function Convert-ToLF {
     param([string]$Path)
     $content = Get-Content $Path -Raw
@@ -29,9 +31,33 @@ function Convert-ToLF {
     Set-Content -Path $Path -Value $content -NoNewline -Encoding utf8
 }
 
-# ================================
+# --------------------------------------------
+# Create directory structure
+# --------------------------------------------
+$folders = @(
+    "$projectRoot\terraform",
+    "$projectRoot\terraform\templates",
+    "$projectRoot\terraform\generated",
+    "$projectRoot\ansible",
+    "$projectRoot\ansible\roles",
+    "$projectRoot\ansible\roles\jenkins_master\tasks",
+    "$projectRoot\ansible\roles\jenkins_slave\tasks",
+    "$projectRoot\ansible\roles\wildfly_server\tasks",
+    "$projectRoot\ansible\roles\apache\tasks",
+    "$projectRoot\ansible\roles\ssl\tasks",
+    "$projectRoot\ansible\roles\backup\tasks",
+    "$projectRoot\ansible\group_vars",
+    "$projectRoot\scripts",
+    "$projectRoot\images"
+)
+
+foreach ($f in $folders) {
+    New-Item -ItemType Directory -Force -Path $f | Out-Null
+}
+
+# --------------------------------------------
 # .gitignore
-# ================================
+# --------------------------------------------
 $gitignore = @"
 # Terraform
 .terraform/
@@ -54,171 +80,27 @@ venv/
 "@
 Write-Utf8NoBom "$projectRoot\.gitignore" $gitignore
 
-# ================================
+# --------------------------------------------
 # README.md
-# ================================
+# --------------------------------------------
 $readme = @"
 # Project 08 – Terraform + Ansible CI/CD Infrastructure (Jenkins + WildFly on AWS)
 
-![Jenkins CI/CD](https://img.shields.io/badge/Jenkins-CI%2FCD-blue)
-![Java 21](https://img.shields.io/badge/Java-21-orange)
-![WildFly Application Server](https://img.shields.io/badge/WildFly-Application%20Server-red)
-![Ubuntu Linux 22.04](https://img.shields.io/badge/Linux-Ubuntu%2022.04-green)
-![AWS EC2](https://img.shields.io/badge/AWS-EC2-yellow)
-![DevOps Automation](https://img.shields.io/badge/DevOps-Automation-lightgrey)
-![Status Completed](https://img.shields.io/badge/Status-Initialized-success)
-
----
-
-## Project Overview
-
 This project provisions a complete CI/CD infrastructure on AWS using Terraform and Ansible:
 
-- Jenkins Master (Apache + Jenkins + self-signed SSL + AWS CLI)
-- Jenkins Slave (JDK + SSH access)
-- WildFly Web Server (Apache + WildFly + self-signed SSL)
-- S3 bucket for JENKINS_HOME backup and restore
+- Jenkins Master (Apache + Jenkins + SSL + AWS CLI)
+- Jenkins Slave (JDK + SSH)
+- WildFly Web Server (Apache + SSL)
+- S3 bucket for JENKINS_HOME backup/restore
 
-**Terraform** is responsible for infrastructure (EC2, Security Groups, S3, key pair, inventory generation).  
-**Ansible** is responsible for software installation and configuration (Jenkins, WildFly, Apache, SSL, backup/restore).
-
----
-
-## Project Structure
-
-\`\`\`
-project-08-terraform-ansible-cicd/
-│
-├── terraform/
-│   ├── main.tf
-│   ├── provider.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── ec2-master.tf
-│   ├── ec2-slave.tf
-│   ├── ec2-wildfly.tf
-│   ├── security-groups.tf
-│   ├── s3.tf
-│   ├── keypair.tf
-│   ├── inventory-gen.tf
-│   ├── templates/
-│   │   └── inventory.tpl
-│   └── generated/
-│       └── inventory.ini
-│
-├── ansible/
-│   ├── playbook.yml
-│   ├── roles/
-│   │   ├── jenkins_master/
-│   │   │   └── tasks/main.yml
-│   │   ├── jenkins_slave/
-│   │   │   └── tasks/main.yml
-│   │   ├── wildfly_server/
-│   │   │   └── tasks/main.yml
-│   │   ├── apache/
-│   │   │   └── tasks/main.yml
-│   │   ├── ssl/
-│   │   │   └── tasks/main.yml
-│   │   └── backup/
-│   │       └── tasks/main.yml
-│   └── group_vars/
-│       ├── jenkins_master.yml
-│       ├── jenkins_slave.yml
-│       └── wildfly.yml
-│
-├── scripts/
-│   ├── backup_jenkins_home.sh
-│   └── restore_jenkins_home.sh
-│
-├── images/
-│
-└── README.md
-\`\`\`
-
----
-
-## Usage
-
-### 1. Create infrastructure with Terraform
-
-\`\`\bash
-cd terraform
-terraform init
-terraform apply
-\`\`\
-
-Terraform will:
-
-- create EC2 instances (Jenkins Master, Jenkins Slave, WildFly Server)
-- create Security Groups
-- create S3 bucket for JENKINS_HOME backup
-- generate Ansible inventory at: \`terraform/generated/inventory.ini\`
-
----
-
-### 2. Configure servers with Ansible
-
-\`\`\bash
-cd ansible
-ansible-playbook -i ../terraform/generated/inventory.ini playbook.yml
-\`\`\
-
-Ansible will:
-
-- install Apache + Jenkins + Java + AWS CLI on Jenkins Master
-- configure JENKINS_HOME restore from S3
-- configure cron-based backup of JENKINS_HOME to S3
-- install Java and prepare Jenkins Slave
-- install Apache + WildFly on Web Server
-- configure self-signed SSL certificates
-
----
-
-### 3. Destroy infrastructure
-
-\`\`\bash
-cd terraform
-terraform destroy
-\`\`\
-
----
-
-## Notes
-
-- AMI: Ubuntu 22.04 (Jammy)
-- SSL: self-signed certificates (OpenSSL)
-- Backup: simple cron-based backup to S3, restore via Ansible
-- Inventory: generated automatically by Terraform using a template file
+Terraform → infrastructure  
+Ansible → configuration  
 "@
 Write-Utf8NoBom "$projectRoot\README.md" $readme
 
-# ================================
-# Create folders
-# ================================
-$folders = @(
-    "$projectRoot\terraform",
-    "$projectRoot\terraform\templates",
-    "$projectRoot\terraform\generated",
-    "$projectRoot\ansible",
-    "$projectRoot\ansible\roles",
-    "$projectRoot\ansible\roles\jenkins_master\tasks",
-    "$projectRoot\ansible\roles\jenkins_slave\tasks",
-    "$projectRoot\ansible\roles\wildfly_server\tasks",
-    "$projectRoot\ansible\roles\apache\tasks",
-    "$projectRoot\ansible\roles\ssl\tasks",
-    "$projectRoot\ansible\roles\backup\tasks",
-    "$projectRoot\ansible\group_vars",
-    "$projectRoot\scripts",
-    "$projectRoot\images"
-)
-
-foreach ($f in $folders) {
-    New-Item -ItemType Directory -Force -Path $f | Out-Null
-}
-
-# ================================
+# --------------------------------------------
 # Terraform: provider.tf
-# ================================
+# --------------------------------------------
 $providerTf = @"
 terraform {
   required_version = ">= 1.5.0"
@@ -241,9 +123,9 @@ provider "aws" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\provider.tf" $providerTf
 
-# ================================
+# --------------------------------------------
 # Terraform: variables.tf
-# ================================
+# --------------------------------------------
 $variablesTf = @"
 variable "aws_region" {
   description = "AWS region"
@@ -271,9 +153,9 @@ variable "jenkins_s3_bucket_name" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\variables.tf" $variablesTf
 
-# ================================
+# --------------------------------------------
 # Terraform: main.tf (AMI + VPC)
-# ================================
+# --------------------------------------------
 $mainTf = @"
 data "aws_ami" "ubuntu_2204" {
   most_recent = true
@@ -290,10 +172,14 @@ data "aws_vpc" "default" {
 }
 "@
 Write-Utf8NoBom "$projectRoot\terraform\main.tf" $mainTf
+# ============================================
+# init_project_08.ps1 — PART 2 / 5
+# Terraform: SG, EC2, S3, outputs, inventory
+# ============================================
 
-# ================================
+# --------------------------------------------
 # Terraform: security-groups.tf
-# ================================
+# --------------------------------------------
 $sgTf = @"
 resource "aws_security_group" "jenkins_master_sg" {
   name   = "jenkins-master-sg-08"
@@ -415,9 +301,9 @@ resource "aws_security_group" "wildfly_sg" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\security-groups.tf" $sgTf
 
-# ================================
+# --------------------------------------------
 # Terraform: keypair.tf
-# ================================
+# --------------------------------------------
 $keypairTf = @"
 data "aws_key_pair" "existing" {
   key_name = var.key_name
@@ -425,9 +311,9 @@ data "aws_key_pair" "existing" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\keypair.tf" $keypairTf
 
-# ================================
+# --------------------------------------------
 # Terraform: s3.tf
-# ================================
+# --------------------------------------------
 $s3Tf = @"
 resource "aws_s3_bucket" "jenkins_home" {
   bucket = var.jenkins_s3_bucket_name
@@ -439,9 +325,9 @@ resource "aws_s3_bucket" "jenkins_home" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\s3.tf" $s3Tf
 
-# ================================
+# --------------------------------------------
 # Terraform: ec2-master.tf
-# ================================
+# --------------------------------------------
 $masterTf = @"
 resource "aws_instance" "jenkins_master" {
   ami                    = data.aws_ami.ubuntu_2204.id
@@ -457,9 +343,9 @@ resource "aws_instance" "jenkins_master" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\ec2-master.tf" $masterTf
 
-# ================================
+# --------------------------------------------
 # Terraform: ec2-slave.tf
-# ================================
+# --------------------------------------------
 $slaveTf = @"
 resource "aws_instance" "jenkins_slave" {
   ami                    = data.aws_ami.ubuntu_2204.id
@@ -475,9 +361,9 @@ resource "aws_instance" "jenkins_slave" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\ec2-slave.tf" $slaveTf
 
-# ================================
+# --------------------------------------------
 # Terraform: ec2-wildfly.tf
-# ================================
+# --------------------------------------------
 $wildflyTf = @"
 resource "aws_instance" "wildfly_server" {
   ami                    = data.aws_ami.ubuntu_2204.id
@@ -493,9 +379,9 @@ resource "aws_instance" "wildfly_server" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\ec2-wildfly.tf" $wildflyTf
 
-# ================================
+# --------------------------------------------
 # Terraform: outputs.tf
-# ================================
+# --------------------------------------------
 $outputsTf = @"
 output "jenkins_master_ip" {
   value = aws_instance.jenkins_master.public_ip
@@ -515,9 +401,9 @@ output "jenkins_s3_bucket_name" {
 "@
 Write-Utf8NoBom "$projectRoot\terraform\outputs.tf" $outputsTf
 
-# ================================
+# --------------------------------------------
 # Terraform: templates/inventory.tpl
-# ================================
+# --------------------------------------------
 $inventoryTpl = @"
 [jenkins_master]
 \${jenkins_master_ip}
@@ -530,9 +416,9 @@ $inventoryTpl = @"
 "@
 Write-Utf8NoBom "$projectRoot\terraform\templates\inventory.tpl" $inventoryTpl
 
-# ================================
+# --------------------------------------------
 # Terraform: inventory-gen.tf
-# ================================
+# --------------------------------------------
 $inventoryGenTf = @"
 locals {
   inventory_content = templatefile("${path.module}/templates/inventory.tpl", {
@@ -548,10 +434,14 @@ resource "local_file" "ansible_inventory" {
 }
 "@
 Write-Utf8NoBom "$projectRoot\terraform\inventory-gen.tf" $inventoryGenTf
+# ============================================
+# init_project_08.ps1 — PART 3 / 5
+# Ansible: playbook, group_vars, roles
+# ============================================
 
-# ================================
+# --------------------------------------------
 # Ansible: group_vars
-# ================================
+# --------------------------------------------
 $gvMaster = @"
 jenkins_s3_bucket_name: jenkins-home-backup-bucket-08
 jenkins_home_path: /var/lib/jenkins
@@ -569,9 +459,9 @@ wildfly_install_dir: /opt/wildfly
 "@
 Write-Utf8NoBom "$projectRoot\ansible\group_vars\wildfly.yml" $gvWildfly
 
-# ================================
+# --------------------------------------------
 # Ansible: playbook.yml
-# ================================
+# --------------------------------------------
 $playbook = @"
 - hosts: jenkins_master
   become: yes
@@ -595,9 +485,9 @@ $playbook = @"
 "@
 Write-Utf8NoBom "$projectRoot\ansible\playbook.yml" $playbook
 
-# ================================
+# --------------------------------------------
 # Ansible role: apache/tasks/main.yml
-# ================================
+# --------------------------------------------
 $apacheTasks = @"
 ---
 # Install and configure Apache HTTP Server
@@ -616,9 +506,9 @@ $apacheTasks = @"
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\apache\tasks\main.yml" $apacheTasks
 
-# ================================
+# --------------------------------------------
 # Ansible role: ssl/tasks/main.yml (self-signed)
-# ================================
+# --------------------------------------------
 $sslTasks = @"
 ---
 # Generate self-signed SSL certificate for Apache
@@ -664,12 +554,16 @@ $sslTasks = @"
     name: apache2
     state: started
     enabled: yes
+
+- name: Flush handlers
+  meta: flush_handlers
+
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\ssl\tasks\main.yml" $sslTasks
 
-# ================================
+# --------------------------------------------
 # Ansible role: jenkins_master/tasks/main.yml
-# ================================
+# --------------------------------------------
 $jenkinsMasterTasks = @"
 ---
 # Install Java, Jenkins, AWS CLI and prepare JENKINS_HOME restore
@@ -729,9 +623,9 @@ $jenkinsMasterTasks = @"
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\jenkins_master\tasks\main.yml" $jenkinsMasterTasks
 
-# ================================
+# --------------------------------------------
 # Ansible role: backup/tasks/main.yml
-# ================================
+# --------------------------------------------
 $backupTasks = @"
 ---
 # Configure cron-based backup of JENKINS_HOME to S3
@@ -758,9 +652,9 @@ $backupTasks = @"
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\backup\tasks\main.yml" $backupTasks
 
-# ================================
+# --------------------------------------------
 # Ansible role: jenkins_slave/tasks/main.yml
-# ================================
+# --------------------------------------------
 $jenkinsSlaveTasks = @"
 ---
 # Prepare Jenkins Slave: Java + jenkins user + SSH
@@ -789,9 +683,9 @@ $jenkinsSlaveTasks = @"
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\jenkins_slave\tasks\main.yml" $jenkinsSlaveTasks
 
-# ================================
+# --------------------------------------------
 # Ansible role: wildfly_server/tasks/main.yml
-# ================================
+# --------------------------------------------
 $wildflyTasks = @"
 ---
 # Install Java, WildFly and configure as a service
@@ -864,55 +758,169 @@ $wildflyTasks = @"
     state: started
 "@
 Write-Utf8NoBom "$projectRoot\ansible\roles\wildfly_server\tasks\main.yml" $wildflyTasks
+# ============================================
+# init_project_08.ps1 — PART 4 / 5
+# Bash scripts: backup_jenkins_home.sh, restore_jenkins_home.sh
+# ============================================
 
-# ================================
-# scripts: backup_jenkins_home.sh
-# ================================
-$backupScript = @"
-#!/usr/bin/env bash
-set -e
+# --------------------------------------------
+# scripts/backup_jenkins_home.sh
+# --------------------------------------------
+$backupScriptPath = "$projectRoot\scripts\backup_jenkins_home.sh"
+New-Item -ItemType File -Force -Path $backupScriptPath | Out-Null
 
-JENKINS_HOME="\$1"
-S3_BUCKET="\$2"
+Add-Content -Path $backupScriptPath -Value '#!/usr/bin/env bash'
+Add-Content -Path $backupScriptPath -Value 'set -euo pipefail'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'LOG_FILE="/var/log/jenkins_backup.log"'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'log() {'
+Add-Content -Path $backupScriptPath -Value '  local level="$1"; shift'
+Add-Content -Path $backupScriptPath -Value '  local msg="$*"'
+Add-Content -Path $backupScriptPath -Value '  local ts="$(date -u +%Y-%m-%dT%H:%M:%S)"'
+Add-Content -Path $backupScriptPath -Value '  echo "[$ts] [$level] $msg" | tee -a "$LOG_FILE"'
+Add-Content -Path $backupScriptPath -Value '}'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'log_info()  { log "INFO"  "$@"; }'
+Add-Content -Path $backupScriptPath -Value 'log_warn()  { log "WARN"  "$@"; }'
+Add-Content -Path $backupScriptPath -Value 'log_error() { log "ERROR" "$@"; }'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'if [ "$#" -ne 2 ]; then'
+Add-Content -Path $backupScriptPath -Value '  echo "Usage: $0 /var/lib/jenkins jenkins-home-backup-bucket-08"'
+Add-Content -Path $backupScriptPath -Value '  exit 1'
+Add-Content -Path $backupScriptPath -Value 'fi'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'JENKINS_HOME="$1"'
+Add-Content -Path $backupScriptPath -Value 'S3_BUCKET="$2"'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'if [ ! -d "$JENKINS_HOME" ]; then'
+Add-Content -Path $backupScriptPath -Value '  log_error "JENKINS_HOME directory does not exist: $JENKINS_HOME"'
+Add-Content -Path $backupScriptPath -Value '  exit 1'
+Add-Content -Path $backupScriptPath -Value 'fi'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'if ! command -v aws >/dev/null 2>&1; then'
+Add-Content -Path $backupScriptPath -Value '  log_error "aws CLI is not installed"'
+Add-Content -Path $backupScriptPath -Value '  exit 1'
+Add-Content -Path $backupScriptPath -Value 'fi'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'if ! aws s3 ls "s3://$S3_BUCKET" >/dev/null 2>&1; then'
+Add-Content -Path $backupScriptPath -Value '  log_error "S3 bucket does not exist or is not accessible: $S3_BUCKET"'
+Add-Content -Path $backupScriptPath -Value '  exit 1'
+Add-Content -Path $backupScriptPath -Value 'fi'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'TS="$(date -u +%Y-%m-%dT%H-%M-%S)"'
+Add-Content -Path $backupScriptPath -Value 'ARCHIVE="/tmp/jenkins_home_${TS}.tar.gz"'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'log_info "Starting backup of $JENKINS_HOME to S3 bucket $S3_BUCKET"'
+Add-Content -Path $backupScriptPath -Value 'log_info "Creating archive $ARCHIVE"'
+Add-Content -Path $backupScriptPath -Value 'tar -czf "$ARCHIVE" -C / "$(echo "$JENKINS_HOME" | sed "s|^/||")"'
+Add-Content -Path $backupScriptPath -Value ''
+Add-Content -Path $backupScriptPath -Value 'S3_OBJECT="s3://$S3_BUCKET/jenkins_home_${TS}.tar.gz"'
+Add-Content -Path $backupScriptPath -Value 'log_info "Uploading archive to $S3_OBJECT"'
+Add-Content -Path $backupScriptPath -Value 'if aws s3 cp "$ARCHIVE" "$S3_OBJECT"; then'
+Add-Content -Path $backupScriptPath -Value '  log_info "Backup successfully uploaded to $S3_OBJECT"'
+Add-Content -Path $backupScriptPath -Value '  rm -f "$ARCHIVE"'
+Add-Content -Path $backupScriptPath -Value '  log_info "Temporary archive removed: $ARCHIVE"'
+Add-Content -Path $backupScriptPath -Value '  exit 0'
+Add-Content -Path $backupScriptPath -Value 'else'
+Add-Content -Path $backupScriptPath -Value '  log_error "Failed to upload backup to S3"'
+Add-Content -Path $backupScriptPath -Value '  exit 1'
+Add-Content -Path $backupScriptPath -Value 'fi'
 
-if [ -z "\$JENKINS_HOME" ] || [ -z "\$S3_BUCKET" ]; then
-  echo "Usage: backup_jenkins_home.sh /var/lib/jenkins jenkins-home-backup-bucket-08"
-  exit 1
-fi
+Convert-ToLF $backupScriptPath
 
-TIMESTAMP=\$(date +%Y-%m-%d_%H-%M)
-ARCHIVE="/tmp/jenkins_home_\${TIMESTAMP}.tar.gz"
+# --------------------------------------------
+# scripts/restore_jenkins_home.sh
+# --------------------------------------------
+$restoreScriptPath = "$projectRoot\scripts\restore_jenkins_home.sh"
+New-Item -ItemType File -Force -Path $restoreScriptPath | Out-Null
 
-tar -czf "\$ARCHIVE" "\$JENKINS_HOME"
-aws s3 cp "\$ARCHIVE" "s3://\$S3_BUCKET/jenkins_home_\${TIMESTAMP}.tar.gz"
-rm -f "\$ARCHIVE"
-"@
-Write-Utf8NoBom "$projectRoot\scripts\backup_jenkins_home.sh" $backupScript
-Convert-ToLF "$projectRoot\scripts\backup_jenkins_home.sh"
+Add-Content -Path $restoreScriptPath -Value '#!/usr/bin/env bash'
+Add-Content -Path $restoreScriptPath -Value 'set -euo pipefail'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'LOG_FILE="/var/log/jenkins_backup.log"'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log() {'
+Add-Content -Path $restoreScriptPath -Value '  local level="$1"; shift'
+Add-Content -Path $restoreScriptPath -Value '  local msg="$*"'
+Add-Content -Path $restoreScriptPath -Value '  local ts="$(date -u +%Y-%m-%dT%H:%M:%S)"'
+Add-Content -Path $restoreScriptPath -Value '  echo "[$ts] [$level] $msg" | tee -a "$LOG_FILE"'
+Add-Content -Path $restoreScriptPath -Value '}'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log_info()  { log "INFO"  "$@"; }'
+Add-Content -Path $restoreScriptPath -Value 'log_warn()  { log "WARN"  "$@"; }'
+Add-Content -Path $restoreScriptPath -Value 'log_error() { log "ERROR" "$@"; }'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'if [ "$#" -ne 3 ]; then'
+Add-Content -Path $restoreScriptPath -Value '  echo "Usage: $0 /var/lib/jenkins jenkins-home-backup-bucket-08 jenkins_home_YYYY-MM-DDTHH-MM-SS.tar.gz"'
+Add-Content -Path $restoreScriptPath -Value '  exit 1'
+Add-Content -Path $restoreScriptPath -Value 'fi'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'JENKINS_HOME="$1"'
+Add-Content -Path $restoreScriptPath -Value 'S3_BUCKET="$2"'
+Add-Content -Path $restoreScriptPath -Value 'ARCHIVE_NAME="$3"'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'if [ ! -d "$JENKINS_HOME" ]; then'
+Add-Content -Path $restoreScriptPath -Value '  log_error "JENKINS_HOME directory does not exist: $JENKINS_HOME"'
+Add-Content -Path $restoreScriptPath -Value '  exit 1'
+Add-Content -Path $restoreScriptPath -Value 'fi'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'if ! command -v aws >/dev/null 2>&1; then'
+Add-Content -Path $restoreScriptPath -Value '  log_error "aws CLI is not installed"'
+Add-Content -Path $restoreScriptPath -Value '  exit 1'
+Add-Content -Path $restoreScriptPath -Value 'fi'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'S3_OBJECT="s3://$S3_BUCKET/$ARCHIVE_NAME"'
+Add-Content -Path $restoreScriptPath -Value 'TMP_ARCHIVE="/tmp/jenkins_home_restore.tar.gz"'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log_info "Restoring JENKINS_HOME from $S3_OBJECT to $JENKINS_HOME"'
+Add-Content -Path $restoreScriptPath -Value 'if ! aws s3 cp "$S3_OBJECT" "$TMP_ARCHIVE"; then'
+Add-Content -Path $restoreScriptPath -Value '  log_error "Failed to download archive from S3: $S3_OBJECT"'
+Add-Content -Path $restoreScriptPath -Value '  exit 1'
+Add-Content -Path $restoreScriptPath -Value 'fi'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'if systemctl is-active --quiet jenkins; then'
+Add-Content -Path $restoreScriptPath -Value '  log_info "Stopping Jenkins service before restore"'
+Add-Content -Path $restoreScriptPath -Value '  systemctl stop jenkins'
+Add-Content -Path $restoreScriptPath -Value 'fi'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log_info "Extracting archive to /"'
+Add-Content -Path $restoreScriptPath -Value 'tar -xzf "$TMP_ARCHIVE" -C /'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log_info "Setting ownership on $JENKINS_HOME"'
+Add-Content -Path $restoreScriptPath -Value 'chown -R jenkins:jenkins "$JENKINS_HOME"'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'rm -f "$TMP_ARCHIVE"'
+Add-Content -Path $restoreScriptPath -Value 'log_info "Temporary archive removed: $TMP_ARCHIVE"'
+Add-Content -Path $restoreScriptPath -Value ''
+Add-Content -Path $restoreScriptPath -Value 'log_info "Starting Jenkins service"'
+Add-Content -Path $restoreScriptPath -Value 'systemctl start jenkins'
+Add-Content -Path $restoreScriptPath -Value 'log_info "JENKINS_HOME restore completed successfully"'
+Add-Content -Path $restoreScriptPath -Value 'exit 0'
 
-# ================================
-# scripts: restore_jenkins_home.sh
-# ================================
-$restoreScript = @"
-#!/usr/bin/env bash
-set -e
+Convert-ToLF $restoreScriptPath
+# ============================================
+# init_project_08.ps1 — PART 5 / 5
+# Finalization
+# ============================================
 
-JENKINS_HOME="\$1"
-S3_BUCKET="\$2"
-ARCHIVE_NAME="\$3"
+# Fix permissions for scripts
+Set-ItemProperty -Path "$projectRoot\scripts\backup_jenkins_home.sh" -Name IsReadOnly -Value $false
+Set-ItemProperty -Path "$projectRoot\scripts\restore_jenkins_home.sh" -Name IsReadOnly -Value $false
 
-if [ -z "\$JENKINS_HOME" ] || [ -z "\$S3_BUCKET" ] || [ -z "\$ARCHIVE_NAME" ]; then
-  echo "Usage: restore_jenkins_home.sh /var/lib/jenkins jenkins-home-backup-bucket-08 jenkins_home_YYYY-MM-DD_HH-MM.tar.gz"
-  exit 1
-fi
-
-aws s3 cp "s3://\$S3_BUCKET/\$ARCHIVE_NAME" /tmp/jenkins_home_restore.tar.gz
-systemctl stop jenkins || true
-tar -xzf /tmp/jenkins_home_restore.tar.gz -C /
-chown -R jenkins:jenkins "\$JENKINS_HOME"
-systemctl start jenkins || true
-"@
-Write-Utf8NoBom "$projectRoot\scripts\restore_jenkins_home.sh" $restoreScript
-Convert-ToLF "$projectRoot\scripts\restore_jenkins_home.sh"
-
-Write-Host "Project project-08-terraform-ansible-cicd created successfully." -ForegroundColor Green
+Write-Host ""
+Write-Host "===============================================" -ForegroundColor Green
+Write-Host " Project project-08-terraform-ansible-cicd created successfully!" -ForegroundColor Green
+Write-Host "===============================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "Terraform directory: $projectRoot\terraform" -ForegroundColor Cyan
+Write-Host "Ansible directory:   $projectRoot\ansible" -ForegroundColor Cyan
+Write-Host "Scripts directory:   $projectRoot\scripts" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Next steps:" -ForegroundColor Yellow
+Write-Host "1. cd terraform" -ForegroundColor Yellow
+Write-Host "2. terraform init" -ForegroundColor Yellow
+Write-Host "3. terraform apply -auto-approve" -ForegroundColor Yellow
+Write-Host "4. ansible-playbook -i terraform/generated/inventory.ini ../ansible/playbook.yml" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "Done." -ForegroundColor Green

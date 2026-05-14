@@ -1,0 +1,71 @@
+---
+# Install Java, Jenkins, AWS CLI and prepare JENKINS_HOME restore
+
+- name: Install Java and required packages
+  apt:
+    name:
+      - openjdk-21-jdk
+      - curl
+      - gnupg
+      - ca-certificates
+      - awscli
+    state: present
+    update_cache: yes
+
+# Jenkins repo and keys are broken globally — remove everything related
+- name: Remove old Jenkins repo if exists
+  file:
+    path: /etc/apt/sources.list.d/jenkins.list
+    state: absent
+
+- name: Remove old Jenkins keyrings
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/share/keyrings/jenkins-keyring.asc
+    - /usr/share/keyrings/jenkins.io.key
+    - /etc/apt/trusted.gpg.d/jenkins.gpg
+    - /etc/apt/trusted.gpg.d/jenkins-old.gpg
+
+# Install Jenkins via .deb (the only stable method right now)
+- name: Download Jenkins .deb
+  get_url:
+    url: https://pkg.jenkins.io/debian-stable/binary/jenkins_2.452.1_all.deb
+    dest: /tmp/jenkins.deb
+    mode: '0644'
+
+- name: Install Jenkins from .deb
+  apt:
+    deb: /tmp/jenkins.deb
+
+- name: Ensure Jenkins service is enabled and started
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+# Prepare JENKINS_HOME
+- name: Ensure JENKINS_HOME directory exists
+  file:
+    path: "{{ jenkins_home_path }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+
+# Restore from S3 if exists
+- name: Restore JENKINS_HOME from S3 if archive exists
+  shell: |
+    if aws s3 ls s3://{{ jenkins_s3_bucket_name }}/jenkins_home.tar.gz >/dev/null 2>&1; then
+      echo "Found existing JENKINS_HOME backup in S3, restoring..."
+      aws s3 cp s3://{{ jenkins_s3_bucket_name }}/jenkins_home.tar.gz /tmp/jenkins_home.tar.gz
+      systemctl stop jenkins
+      tar -xzf /tmp/jenkins_home.tar.gz -C /
+      chown -R jenkins:jenkins {{ jenkins_home_path }}
+      systemctl start jenkins
+    else
+      echo "No existing JENKINS_HOME backup found in S3, skipping restore."
+    fi
+  args:
+    executable: /bin/bash

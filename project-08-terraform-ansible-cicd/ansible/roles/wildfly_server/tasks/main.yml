@@ -1,0 +1,69 @@
+---
+# Install Java, WildFly and configure as a service
+
+- name: Install Java and tools
+  apt:
+    name:
+      - openjdk-21-jdk
+      - wget
+      - unzip
+    state: present
+    update_cache: yes
+
+- name: Download WildFly archive
+  get_url:
+    url: "https://github.com/wildfly/wildfly/releases/download/{{ wildfly_version }}/wildfly-{{ wildfly_version }}.zip"
+    dest: /tmp/wildfly-{{ wildfly_version }}.zip
+
+- name: Unpack WildFly
+  unarchive:
+    src: /tmp/wildfly-{{ wildfly_version }}.zip
+    dest: /opt
+    remote_src: yes
+    creates: "/opt/wildfly-{{ wildfly_version }}"
+
+- name: Symlink WildFly directory
+  file:
+    src: "/opt/wildfly-{{ wildfly_version }}"
+    dest: "{{ wildfly_install_dir }}"
+    state: link
+    force: yes
+
+- name: Create wildfly user
+  user:
+    name: wildfly
+    system: yes
+    shell: /usr/sbin/nologin
+
+- name: Set ownership on WildFly directory
+  file:
+    path: "{{ wildfly_install_dir }}"
+    state: directory
+    owner: wildfly
+    group: wildfly
+    recurse: yes
+
+- name: Create systemd service for WildFly
+  copy:
+    dest: /etc/systemd/system/wildfly.service
+    content: |
+      [Unit]
+      Description=WildFly Application Server
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=wildfly
+      Group=wildfly
+      ExecStart={{ wildfly_install_dir }}/bin/standalone.sh -b 0.0.0.0
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Restart WildFly
+
+- name: Enable and start WildFly
+  systemd:
+    name: wildfly
+    enabled: yes
+    state: started

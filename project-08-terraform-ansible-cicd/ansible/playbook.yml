@@ -1,0 +1,19 @@
+- hosts: jenkins_master
+  become: yes
+  roles:
+    - apache
+    - ssl
+    - jenkins_master
+    - backup
+
+- hosts: jenkins_slave
+  become: yes
+  roles:
+    - jenkins_slave
+
+- hosts: wildfly
+  become: yes
+  roles:
+    - apache
+    - ssl
+    - wildfly_server

@@ -83,6 +83,8 @@ Working with AWS CLI, provisioning cloud resources using CloudFormation, and int
 
 Combining Terraform for provisioning and Ansible for configuration management to build reproducible infrastructure environments.
 
+👉 Detailed report is available in [`project-08-terraform-ansible-cicd/README.md`](project-08-terraform-ansible-cicd/README.md).
+
 ---
 
 #### 📂 Project 09 — Docker: Modern Containerization Concepts

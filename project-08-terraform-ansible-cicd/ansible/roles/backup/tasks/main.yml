@@ -1,0 +1,20 @@
+---
+- name: Install AWS CLI
+  apt:
+    name: awscli
+    state: present
+    update_cache: yes
+
+- name: Deploy backup script
+  copy:
+    src: backup_jenkins_home.sh
+    dest: /usr/local/bin/backup_jenkins_home.sh
+    mode: '0755'
+
+- name: Configure cron job for JENKINS_HOME backup
+  cron:
+    name: "JENKINS_HOME backup to S3"
+    user: root
+    minute: "0"
+    hour: "*/6"
+    job: "/usr/local/bin/backup_jenkins_home.sh {{ jenkins_home_path }} {{ jenkins_s3_bucket_name }} >> /var/log/jenkins_backup.log 2>&1"

@@ -1,0 +1,18 @@
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+crash.log
+
+# Ansible
+*.retry
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Python
+venv/
+
+# Logs
+*.log

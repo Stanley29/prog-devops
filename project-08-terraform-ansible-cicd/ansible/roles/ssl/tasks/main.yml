@@ -1,0 +1,47 @@
+---
+# Generate self-signed SSL certificate for Apache
+
+- name: Install OpenSSL
+  apt:
+    name: openssl
+    state: present
+    update_cache: yes
+
+- name: Create SSL directory
+  file:
+    path: /etc/apache2/ssl
+    state: directory
+    mode: '0755'
+
+- name: Generate self-signed certificate
+  command: >
+    openssl req -x509 -nodes -days 365
+    -subj "/C=DE/ST=Saarland/L=Saarbruecken/O=DevOps/OU=IT/CN=example.local"
+    -newkey rsa:2048
+    -keyout /etc/apache2/ssl/apache-selfsigned.key
+    -out /etc/apache2/ssl/apache-selfsigned.crt
+  args:
+    creates: /etc/apache2/ssl/apache-selfsigned.crt
+
+- name: Enable SSL module
+  command: a2enmod ssl
+  register: ssl_mod
+  changed_when: ssl_mod.rc == 0
+  failed_when: false
+  notify: Restart Apache
+
+- name: Enable default SSL site
+  command: a2ensite default-ssl
+  register: ssl_site
+  changed_when: ssl_site.rc == 0
+  failed_when: false
+  notify: Restart Apache
+
+- name: Ensure Apache is running with SSL
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: Flush handlers
+  meta: flush_handlers
