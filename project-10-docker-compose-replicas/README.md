@@ -170,6 +170,7 @@ curl http://localhost:4000/questions?amount=2
 ``` 
 
 ***Description***
+
 The Geography Application was deployed using Docker Compose.
 Three services were launched:
 
@@ -182,6 +183,7 @@ Three services were launched:
 After deployment, the API was tested using a curl request to confirm that the backend and database were functioning correctly.
 
 ***Issues Encountered***
+
 During the initial startup, the server container entered an Error / Unhealthy state.
 This happened because:
 
@@ -192,6 +194,7 @@ The Node.js server attempted to connect before MongoDB was fully ready
 Docker marked the server container as unhealthy due to failed initial health checks
 
 ***How the Issue Was Resolved***
+
 No code changes were required.
 After MongoDB finished initialization, the server container automatically retried the connection and successfully established communication with the database.
 
@@ -256,6 +259,7 @@ docker ps
 ``` 
 
 ***Description***
+
 The docker-compose-replicas project was configured to run 7 instances of the Node.js API service behind an Nginx load balancer.
 The docker-compose.yml file was updated to:
 
@@ -273,12 +277,15 @@ After applying the changes, the system successfully built the API image and laun
 
 -**1 Nginx load balancer** (docker-compose-replicas-nginx-1)
 
+
 ***Issues Encountered***
+
 -Docker initially refused to scale the API service because the original configuration used a **fixed container_name**, which prevents scaling.
 
 -This was resolved by **commenting out the container_name** and **commenting out the ports section** for the API service.
 
 ***How the Issue Was Resolved***
+
 -The container_name and ports directives were removed from the API service.
 
 -Nginx was re-enabled as the only service exposing port 3000.
