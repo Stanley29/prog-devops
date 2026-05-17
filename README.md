@@ -99,6 +99,8 @@ Understanding containerization, building Docker images, managing containers, and
 
 Using Docker Compose, multi‑stage builds, and container‑based delivery workflows for modern application deployment.
 
+👉 Detailed report is available in [`project-10-docker-compose-replicas/README.md`](project-10-docker-compose-replicas/README.md).
+
 ---
 
 #### 📂 Project 11 — GitLab CI: Building CI/CD Pipelines
