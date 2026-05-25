@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carservice-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carservice-backend
+  template:
+    metadata:
+      labels:
+        app: carservice-backend
+    spec:
+      containers:
+        - name: carservice-backend
+          image: serhii128/carserviceworkshop:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=mssql,1433;Database=CarServiceWorkshopDb;User Id=sa;Password=Qwerty123!;TrustServerCertificate=True;"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carservice-backend
+spec:
+  selector:
+    app: carservice-backend
+  ports:
+    - port: 80
+      targetPort: 80
+  type: NodePort

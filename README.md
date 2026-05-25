@@ -119,6 +119,10 @@ Building workflows with GitHub Actions, using triggers, reusable actions, and au
 
 Learning Kubernetes architecture, pods, deployments, services, and cluster‑level concepts.
 
+Testing repo is here: - [`CarServiceWorkshop`](https://github.com/Stanley29/CarServiceWorkshop/).
+
+👉 Detailed report is available in [`project-13-kubernetes-crud-deployment/README.md`](project-13-kubernetes-crud-deployment/README.md).
+
 ---
 
 #### 📂 Project 14 — Kubernetes Services, Volumes & AWS EKS with eksctl
