@@ -991,19 +991,10 @@ MSSQL pod running
 During the Kubernetes stage, the backend application was not opened in the browser, because:
 
 1️⃣ Only MSSQL was deployed in Kubernetes
-The backend Deployment + Service were not yet applied — тому сервісу, який можна відкрити в браузері, не існувало.
+The backend Deployment + Service were not yet applied.
 
 2️⃣ No NodePort / Ingress was created
-Щоб відкрити додаток у браузері через Kubernetes, потрібен:
 
-NodePort Service або
-
-Ingress + Minikube tunnel
-
-Це не було виконано, тому не було зовнішнього доступу.
-
-3️⃣ EC2 + Minikube має мережеві обмеження
-Minikube працює всередині EC2, і без NodePort/Ingress трафік ззовні не може потрапити в кластер.
 
 ✔ Despite this — the assignment requirements are fully met
 The homework instructions allow:
@@ -1028,7 +1019,7 @@ Kubernetes cluster installed ✔
 
 Namespace + MSSQL deployed ✔
 
-The browser output requirement applies to Docker deployment, not Kubernetes — і ти це виконав.
+The browser output requirement applies to Docker deployment, not Kubernetes.
 
 ### 🟩 Final Result
 You now have a complete, professional, portfolio‑grade DevOps project that includes:
