@@ -1371,6 +1371,7 @@ This project successfully delivered a full end‑to‑end deployment of a .NET 7
 Throughout the process, multiple DevOps components were designed, configured, and validated — resulting in a fully functional cloud‑hosted environment.
 
 **Key achievements**
+
 -Containerized ASP.NET Core and MSSQL using multi‑stage Docker builds.
 
 -Automated database initialization with SQL scripts and mssql‑tools.
@@ -1386,6 +1387,7 @@ Throughout the process, multiple DevOps components were designed, configured, an
 -Provisioned and configured AWS EC2 infrastructure with Terraform and Minikube.
 
 **Final result**
+
 The application runs reliably inside Kubernetes, connects to a persistent MSSQL database, and is accessible from the browser — demonstrating a complete, production‑style DevOps workflow.
 
 This project showcases strong practical skills in containerization, orchestration, cloud infrastructure, debugging, and deployment automation.
