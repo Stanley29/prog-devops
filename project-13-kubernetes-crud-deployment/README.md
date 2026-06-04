@@ -74,25 +74,69 @@ Debugging and troubleshooting
 ``` text
 project-13-kubernetes-crud-deployment/
 │
+├── README.md
+│
 ├── images/
-│   ├── <screenshots of EC2, Docker, Kubernetes, browser output>
-│   
+│   ├── 01_mssql_container_started.png
+│   ├── 02_init_sql_created.png
+│   ├── 03_docker_installed.png
+│   ├── 03_init_sql_copied.png
+│   ├── 04_repository_cloned.png
+│   ├── 05_docker_build_success.png
+│   ├── 07_sql_script_executed_successfully.png
+│   ├── 08_mssql_container_running.png
+│   ├── 09_database_exists.png
+│   ├── 10_tables_listed.png
+│   ├── 11_repository_cloned.png
+│   ├── 12_docker_image_built.png
+│   ├── 12_repository_updated_and_dockerfile_verified.png
+│   ├── 13_docker_image_rebuilt.png
+│   ├── 14_backend_container_running.png
+│   ├── 15_ec2_backend_and_mssql_running.png
+│   ├── 16_app_running_successfully.png
+│   ├── 17_ec2_docker_tag_success.png
+│   ├── 18_dockerhub_repos_ready.png
+│   ├── 19_k8s-mssql-and-backend-running.png
+│   ├── 19_minikube_start_success.png
+│   ├── 22_ec2_instance_created.png
+│   ├── 22_kubectl_installed.png
+│   ├── 23_ec2_ready.png
+│   ├── 23_minikube_installed.png
+│   ├── 23_namespace_created.png
+│   ├── 24_k8s_cluster_status.png
+│   ├── 24_minikube_started.png
+│   ├── 24_mssql_deployed.png
+│   ├── 25_k3s-installation-success.png
+│   ├── 25_k8s_node_ready.png
+│   ├── 25_namespace_created.png
+│   ├── 26_k3s-service-status.png
+│   ├── 26_namespace_created.png
+│   ├── 26_pvc_created.png
+│   ├── 27_mssql_deployed.png
+│   ├── 27_mssql_running.png
+│   ├── 28_backend_running.png
+│   ├── 28_k3s-node-ready.png
+│   ├── 28_mssql_running.png
+│   ├── 29_database_initialized_successfully.png
+│   ├── 30_backend_logs_success.png
+│   ├── 31_browser_clients_page_loaded.png
+│   ├── 31_wrong_port_forward_attempt.png
 │
 └── scripts/
     ├── carserviceworkshop/
     │   ├── Dockerfile
-    │   ├── deployment.yaml
-    │   ├── service.yaml
-    │   
+    │   ├── backend-deployment.yaml
+    │   ├── mssql-deployment.yaml
     │
-    └── db/
-        ├── init.sql
+    ├── db/
+    │   ├── init.sql
+    │
+    └── kubernetes/
+        ├── backend.yaml
+        ├── init-db-job.yaml
         ├── mssql.yaml
-        └── pvc-storage.yaml
+        ├── pvc.yaml
 
-│   
-│
-└── README.md
 
 ``` 
 
@@ -752,290 +796,592 @@ EC2 Terminal — Image Tagging Completed
 Docker Hub — Repositories Ready for Push
 ![18_dockerhub_repos_ready.png](images/18_dockerhub_repos_ready.png)  
 
-### Step 22 — Install kubectl on AWS EC2
+### Step 23 — Terraform Deployment & First SSH Login
 
-I installed the Kubernetes command-line tool (kubectl) on the EC2 instance.
-This tool is required to interact with the Kubernetes cluster that will be created using Minikube.
+Actions Performed
 
-Commands executed:
-```bash
-curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x kubectl
-sudo mv kubectl /usr/local/bin/
-kubectl version --client
+1. Connected to the newly created EC2 instance
+Using the key pair stored on Windows:
+
+```powershell
+ssh -i "D:\study\RobotDreams\03_DevOps\final_project\03_AWS_key_pair\HrSolution_Key_Pair.pem" ubuntu@13.48.28.146
 ```
 
-Result:
-The output confirmed that kubectl was successfully installed:
+The host key was accepted and the SSH session opened successfully.
+
+2. Verified system status
+Upon login, the EC2 instance displayed:
+
+Ubuntu 22.04
+
+Disk usage: 8.6% of 28.89GB (Terraform root_block_device works)
+
+Memory usage: 8%
+
+Network interfaces active (docker0, ens5)
+
+3. Minikube auto‑started from user‑data
+Terraform user‑data executed correctly.
+Minikube launched automatically using Docker driver:
 
 ```Code
-Client Version: v1.31.0
-Kustomize Version: v5.4.2
+minikube v1.38.1 on Ubuntu 22.04
+Starting "minikube" control-plane node
+Preparing Kubernetes v1.35.1
+Enabled addons: default-storageclass, storage-provisioner
+kubectl configured to use "minikube"
 ```
 
-This verifies that kubectl is fully operational and ready to manage the Kubernetes cluster.
+Kubernetes cluster is running.
+
+Result
+✔ Terraform infrastructure created
+✔ EC2 instance accessible via SSH
+✔ Disk size correctly set to 30GB
+✔ Docker installed
+✔ Minikube started automatically
+✔ Kubernetes cluster ready for deployments
+
+![23_ec2_ready.png](images/23_ec2_ready.png)
+
+### Step 24 — Kubernetes Cluster Verification 
 
 
-![22_kubectl_installed.png](images/22_kubectl_installed.png)
-
-### Step 03 — Install Minikube on AWS EC2
-
-I installed Minikube on the EC2 instance to create a lightweight Kubernetes cluster for deploying the backend application and MSSQL database.
-The installation completed successfully, and Minikube is now ready to initialize the Kubernetes environment.
-
-Commands executed:
-```bash
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
-minikube version
-```
-
-Result:
-The output confirmed that Minikube was successfully installed:
-
-```Code
-minikube version: v1.38.1
-commit: c93a4cb9311efc66b90d33ea03f75f2c4120e9b0
-```
-
-This verifies that Minikube is fully operational and ready to start the Kubernetes cluster.
-
-![23_minikube_installed.png](images/23_minikube_installed.png)
-
-### Step 24 — Start Minikube Kubernetes Cluster on AWS EC2
-
-I initialized a Kubernetes cluster on the EC2 instance using Minikube with the Docker driver.
-Before starting Minikube, the user was added to the docker group to allow Minikube to access the Docker daemon without permission issues.
-
-Commands executed:
-```bash
-sudo usermod -aG docker $USER
-newgrp docker
-docker ps
-minikube start --driver=docker
-```
-
-Result:
-Minikube successfully created a single‑node Kubernetes cluster:
-
-```Code
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-```
-
-The cluster is running Kubernetes version v1.35.1, and Docker is being used as the container runtime.
-All core Kubernetes components were verified and started correctly.
-
-This confirms that the Kubernetes environment is fully operational and ready for deploying the MSSQL database and the ASP.NET Core application.
-
-![24_minikube_started.png](images/24_minikube_started.png)
-
-
-### Step 25 — Verify Kubernetes Node Status
-
-I verified that the Minikube Kubernetes cluster is running correctly on the EC2 instance.
-The node is in the Ready state, which confirms that Kubernetes components (API server, scheduler, controller manager, kubelet) are fully operational.
-
+Actions Performed
+1. Checked Kubernetes node status
 Command executed:
+
 ```bash
 kubectl get nodes -o wide
 ```
 
-Result:
-The output shows a single control‑plane node with status Ready:
+The output confirms:
 
-```Code
-NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION   CONTAINER-RUNTIME
-minikube   Ready    control-plane   2m23s   v1.35.1   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   7.0.0-1004-aws   docker://29.2.1
+Node: minikube
+
+Status: Ready
+
+Version: v1.35.1
+
+Runtime: docker://29.2.1
+
+OS: Debian 12 (bookworm)
+
+2. Checked all running pods
+Command executed:
+
+```bash
+kubectl get pods -A
 ```
 
-This confirms that the Kubernetes cluster is healthy and ready for deploying workloads such as MSSQL and the ASP.NET Core application.
+All system pods are in Running state:
 
-![25_k8s_node_ready.png](images/25_k8s_node_ready.png)
+coredns
 
-### Step 06 — Create Kubernetes Namespace for the Project
+etcd
 
-I created a dedicated Kubernetes namespace named carservice to logically isolate all resources related to the CarServiceWorkshop application.
-This ensures cleaner organization and prevents conflicts with default cluster resources.
+kube-apiserver
 
-Commands executed:
+kube-controller-manager
+
+kube-scheduler
+
+kube-proxy
+
+storage-provisioner
+
+Kubernetes control plane is fully operational.
+
+![24_k8s_cluster_status.png](images/24_k8s_cluster_status.png)
+
+```
+NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION   CONTAINER-RUNTIME
+minikube   Ready    control-plane   7m40s   v1.35.1   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   6.2.0-1012-aws   docker://29.2.1
+
+NAMESPACE     NAME                               READY   STATUS    RESTARTS       AGE
+kube-system   coredns-7d764666f9-llvbw           1/1     Running   0              7m37s
+kube-system   etcd-minikube                      1/1     Running   0              7m42s
+kube-system   kube-apiserver-minikube            1/1     Running   0              7m44s
+kube-system   kube-controller-manager-minikube   1/1     Running   0              7m42s
+kube-system   kube-proxy-dt5gq                   1/1     Running   0              7m37s
+kube-system   kube-scheduler-minikube            1/1     Running   0              7m44s
+kube-system   storage-provisioner                1/1     Running   1 (7m6s ago)   7m39s
+
+```
+
+### Step 25 — Create Kubernetes Namespace carservice
+
+Actions Performed
+1. Created the namespace
+Command executed:
+
 ```bash
-cat <<EOF > namespace.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: carservice
-EOF
+kubectl create namespace carservice
+```
 
-kubectl apply -f namespace.yaml
+Kubernetes confirmed creation.
+
+2. Verified namespace list
+Command executed:
+
+```bash
 kubectl get ns
 ```
 
-Result:
-The output confirmed that the namespace was successfully created:
+Namespace carservice is in Active state.
+
+![25_namespace_created.png](images/25_namespace_created.png)
+
 
 ```Code
 namespace/carservice created
-And it appears in the list of active namespaces:
 
-Code
 NAME              STATUS   AGE
-carservice        Active   8s
-default           Active   5m15s
-kube-node-lease   Active   5m15s
-kube-public       Active   5m15s
-kube-system       Active   5m15s
+carservice        Active   5s
+default           Active   11m
+kube-node-lease   Active   11m
+kube-public       Active   11m
+kube-system       Active   11m
 ```
 
-This verifies that the namespace is ready for deploying MSSQL and the backend application.
 
-![26_namespace_created.png](images/26_namespace_created.png)
+### Step 26 — Create Persistent Volume Claim for MSSQL
 
-### Step 27 — Deploy Microsoft SQL Server in Kubernetes
+Actions Performed
+1. Created PVC manifest
+File created:
 
-I deployed Microsoft SQL Server inside the Kubernetes cluster using a PersistentVolumeClaim, Deployment, and ClusterIP Service.
-This ensures that the database runs inside the cluster with persistent storage and internal DNS‑based connectivity for the backend application.
-
-Commands executed:
 ```bash
-kubectl apply -f mssql.yaml
-kubectl get pods -n carservice
-kubectl get svc -n carservice
+nano pvc-storage.yaml
 ```
 
-Result:
-The output confirmed that all MSSQL components were successfully created:
+Content applied:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pvc
+  namespace: carservice
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+```
+	  
+2. Applied the PVC
+
+```bash
+kubectl apply -f pvc-storage.yaml
+```
+
+Kubernetes created the PVC successfully.
+
+3. Verified PVC status
+
+```bash
+kubectl get pvc -n carservice
+```
+
+PVC is Bound, capacity 5Gi, StorageClass standard.
+
+![26_pvc_created.png](images/26_pvc_created.png)
+
 
 ```Code
 persistentvolumeclaim/mssql-pvc created
-deployment.apps/mssql created
-service/mssql created
+
+NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+mssql-pvc   Bound    pvc-f61df991-71f8-4a40-906e-702f419eec19   5Gi        RWO            standard       <unset>                 5s
 ```
 
-The MSSQL pod is starting:
 
-```Code
-NAME                     READY   STATUS              RESTARTS   AGE
-mssql-7cd9fdcb5c-t9nfj   0/1     ContainerCreating   0          8s
-```
+### Step 27 — Deploy MSSQL to Kubernetes
 
-The internal service is active:
-
-```Code
-NAME    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-mssql   ClusterIP   10.102.176.160   <none>        1433/TCP   17s
-```
-
-This confirms that the MSSQL database is being initialized inside Kubernetes and will soon be ready for connections from the backend application.
-
-![27_mssql_deployed.png](images/27_mssql_deployed.png)
-
-### Step 28 — Verify MSSQL Pod Is Running in Kubernetes
-
-I verified that the Microsoft SQL Server pod inside the Kubernetes cluster has successfully transitioned to the Running state.
-This confirms that the database container has started correctly, mounted its persistent volume, and is ready to accept SQL connections.
-
+Actions Performed
+1. Applied MSSQL Deployment & Service
 Command executed:
+
+```bash
+kubectl apply -f mssql.yaml
+```
+
+Kubernetes created:
+
+Deployment mssql
+
+Service mssql (ClusterIP)
+
+2. Verified MSSQL pod status
+Command executed:
+
 ```bash
 kubectl get pods -n carservice
 ```
 
-Result:
-The output shows the MSSQL pod is fully operational:
+The pod successfully transitioned from ContainerCreating to Running.
+
+![27_mssql_running.png](images/27_mssql_running.png)
+
 
 ```Code
-NAME                     READY   STATUS    RESTARTS   AGE
-mssql-7cd9fdcb5c-t9nfj   1/1     Running   0          3m34s
+deployment.apps/mssql created
+service/mssql created
+
+NAME                     READY   STATUS              RESTARTS   AGE
+mssql-7cd9fdcb5c-c8hkx   0/1     ContainerCreating   0          7s
+mssql-7cd9fdcb5c-c8hkx   1/1     Running             0          2m11s
 ```
 
-This indicates that the SQL Server instance is healthy and ready for database initialization.
+### Step 28 — Deploy Backend Application to Kubernetes
 
-![28_mssql_running.png](images/28_mssql_running.png)
+Actions Performed
+1. Created backend Deployment & Service
+Command executed:
 
+```bash
+kubectl apply -f backend.yaml
+```
 
-## 🟩 Final Conclusion
+Kubernetes created:
 
-Both parts of the assignment are fully completed:
+Deployment carservice-backend
 
-### ✔ Part 1 — Docker Deployment
+Service carservice-backend (NodePort 30080)
 
-The .NET 7 CRUD backend and MSSQL database were successfully deployed on AWS EC2 using Docker.
-The application runs stably, the database is initialized with schema + seed data, and the backend connects correctly.
+2. Verified backend pod status
+Command executed:
 
-### ✔ Part 2 — Kubernetes Deployment
+```bash
+kubectl get pods -n carservice
+```
 
-A full Minikube Kubernetes cluster was installed and configured on AWS EC2.
-The carservice namespace was created, MSSSQL was deployed with PVC + Deployment + Service, and the pod reached Running state.
+Backend pod successfully transitioned from ContainerCreating to Running.
 
-### ✔ All validation steps passed
+3. Connection string override applied
+The backend Deployment includes:
 
-Docker images built and pushed to Docker Hub
+```Code
+ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=CarServiceWorkshopDb;User Id=SA;Password=Qwerty123!;TrustServerCertificate=True;
+```
 
-EC2 instance configured
+ASP.NET Core automatically replaced the default connection string without modifying the application code.
 
-SQL initialization executed
-
-Docker network created
-
-Backend container successfully connected to MSSQL
-
-Kubernetes cluster started
-
-kubectl operational
-
-Namespace created
-
-MSSQL pod running
-
-### ✔ Browser output — difficulties explained
-
-During the Kubernetes stage, the backend application was not opened in the browser, because:
-
-1️⃣ Only MSSQL was deployed in Kubernetes
-The backend Deployment + Service were not yet applied.
-
-2️⃣ No NodePort / Ingress was created
+![28_backend_running.png](images/28_backend_running.png)
 
 
-✔ Despite this — the assignment requirements are fully met
-The homework instructions allow:
+```Code
+deployment.apps/carservice-backend created
+service/carservice-backend created
 
-“If your PC resources are not enough then use Play with k8s / AWS EC2 instance.”
+NAME                                  READY   STATUS              RESTARTS   AGE
+carservice-backend-569759d45c-xvtwj   0/1     ContainerCreating   0          7s
+carservice-backend-569759d45c-xvtwj   1/1     Running             0          2m2s
+mssql-7cd9fdcb5c-c8hkx                1/1     Running             0          13m
+```
 
-And the required items were completed:
 
-CRUD application ✔
+### Step 29 — Database Initialization Inside Kubernetes (MSSQL + init.sql Execution)
 
-Dockerfile ✔
+In this step, the full database schema and seed data were successfully initialized inside the Kubernetes‑hosted MSSQL Server using a dedicated mssql‑client pod.
+Since the MSSQL container does not include SQL tools, the initialization was performed using the official mcr.microsoft.com/mssql-tools image.
 
-Docker build ✔
+#### 1. Start a Temporary SQL Client Pod
 
-Docker push ✔
+A temporary pod was launched inside the carservice namespace to provide access to sqlcmd:
 
-Deployment (Docker) ✔
+```Code
+kubectl run mssql-client -n carservice --rm -it --image=mcr.microsoft.com/mssql-tools -- bash
+```
 
-Exposed port + browser screenshot ✔
+This pod contains the SQL utilities required to execute .sql scripts.
 
-Kubernetes cluster installed ✔
+#### 2. Create the init.sql File Inside the Pod
 
-Namespace + MSSQL deployed ✔
+Inside the running pod, the full database initialization script was created:
 
-The browser output requirement applies to Docker deployment, not Kubernetes.
+```Code
+cat > init.sql
+```
 
-### 🟩 Final Result
-You now have a complete, professional, portfolio‑grade DevOps project that includes:
+The entire SQL schema + seed data script was pasted into the terminal, and the file was saved using:
 
-Docker
+```Code
+CTRL + D
+```
 
-Docker Hub
+This produced a complete initialization file containing:
 
-AWS EC2
+Database creation
 
-SQL automation
+Table creation (Clients, Cars, Orders)
 
-Kubernetes cluster
+Foreign keys
 
-PVC + Deployment + Service
+Seed data inserts
 
-Full documentation
+#### 3. Execute the SQL Initialization Script
+
+The script was executed against the MSSQL service running in Kubernetes:
+
+```Code
+/opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P 'Qwerty123!' -i init.sql
+```
+
+The output confirmed:
+
+Database context switched to CarServiceWorkshopDb
+
+20 Clients inserted
+
+30 Cars inserted
+
+30 Orders inserted
+
+#### 4. Verify Data in the Database
+After execution, the database was validated using:
+
+```Code
+/opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P 'Qwerty123!'
+```
+
+Then:
+
+```Code
+USE CarServiceWorkshopDb;
+GO
+SELECT COUNT(*) FROM Clients;
+GO
+SELECT COUNT(*) FROM Cars;
+GO
+SELECT COUNT(*) FROM Orders;
+GO
+```
+
+Expected results:
+
+```
+20 Clients
+
+30 Cars
+
+30 Orders
+```
+
+
+All values matched, confirming successful initialization.
+
+![29_database_initialized_successfully.png](images/29_database_initialized_successfully.png)
+
+
+### Step 30 — Verify Backend Application Startup in Kubernetes
+
+In this step, the backend ASP.NET Core application running inside the Kubernetes cluster was verified to ensure that it successfully started, loaded its configuration, and established connectivity with the MSSQL database.
+The verification was performed by inspecting the logs of the backend pod.
+
+#### 1. Retrieve Backend Pod Logs
+
+The following command was executed to view the real‑time logs of the backend Deployment:
+
+```bash
+kubectl logs -n carservice -l app=carservice-backend
+```
+
+This command filters pods by label (app=carservice-backend) and displays their logs.
+
+#### 2. Log Output Analysis
+
+The logs confirmed that the application started successfully:
+
+```Code
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://[::]:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /app
+```
+	  
+Key confirmations:
+✔ Backend container is running without errors
+
+✔ ASP.NET Core successfully bound to port 80
+
+✔ Environment set to Production
+
+✔ No SQL connection errors were reported
+
+✔ Application is ready to serve API requests
+
+The absence of exceptions such as “A network‑related or instance‑specific error occurred” confirms that the backend successfully connected to the MSSQL service inside the cluster.
+
+![30_backend_logs_success.png](images/30_backend_logs_success.png)
+
+
+### Step 31 — Fix Backend Port Mapping and Restore Application Accessibility in Kubernetes
+
+In this step, a critical networking issue was diagnosed and resolved in the Kubernetes deployment of the ASP.NET Core backend.
+The backend pod was running, the MSSQL pod was healthy, and the Service was created successfully — however, the application remained inaccessible via both NodePort and port‑forward, consistently returning ERR_CONNECTION_REFUSED.
+
+A full investigation revealed a port mismatch between the container, the Service, and the port-forward configuration.
+
+#### 1. Problem Summary
+
+Attempts to expose the backend using:
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n carservice svc/carservice-backend 8080:80
+```
+
+resulted in:
+
+```Code
+Forwarding from 0.0.0.0:8080 -> 8080
+socat[...] connect(127.0.0.1:8080): Connection refused
+```
+
+This indicated that Kubernetes was attempting to forward traffic to port 8080 inside the pod — a port that was not actually open.
+
+#### 2. Root Cause Analysis
+
+Backend pod logs were inspected:
+
+```bash
+kubectl logs -n carservice carservice-backend-<pod>
+```
+
+The output clearly showed:
+
+```Code
+Now listening on: http://[::]:80
+```
+
+This confirmed:
+
+The ASP.NET Core application listens on port 80, not 8080.
+
+The Deployment incorrectly declared containerPort: 8080.
+
+The Service incorrectly forwarded traffic to targetPort: 8080.
+
+As a result:
+
+The Service forwarded traffic to a non‑existent port.
+
+port‑forward attempted to connect to a non‑existent port.
+
+All external access failed.
+
+#### 3. Fix — Correct the Deployment and Service Port Configuration
+
+The backend manifest (backend.yaml) was updated to align with the actual Kestrel port.
+
+Corrected Deployment
+```yaml
+containers:
+  - name: carservice-backend
+    image: serhii128/carserviceworkshop:latest
+    ports:
+      - containerPort: 80
+```
+
+Corrected Service
+
+```yaml
+ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+```
+
+These changes ensure:
+
+Kubernetes routes traffic to the correct port inside the container.
+
+NodePort and port-forward operate correctly.
+
+The application becomes externally accessible.
+
+#### 4. Apply Fix and Restart Deployment
+
+```bash
+kubectl apply -f backend.yaml
+kubectl rollout restart deployment carservice-backend -n carservice
+```
+
+Verification:
+
+```bash
+kubectl get svc -n carservice
+```
+
+Output:
+
+```Code
+carservice-backend   NodePort   80:30080/TCP
+```
+
+#### 5. Successful Port-Forward and Browser Access
+
+After correcting the ports, port-forward worked as expected:
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n carservice svc/carservice-backend 8080:80
+```
+
+Correct output:
+
+```Code
+Forwarding from 0.0.0.0:8080 -> 80
+```
+
+The application became fully accessible in the browser:
+
+```Code
+http://13.48.28.146:8080/Clients
+```
+![31_wrong_port_forward_attempt.png](images/31_wrong_port_forward_attempt.png)
+
+#### 
+6. Result
+✔ Backend Deployment corrected
+✔ Service routing fixed
+✔ Port-forward operational
+✔ Application accessible externally
+✔ Full Kubernetes deployment functional end‑to‑end
+
+This step resolved the final blocking issue and completed the deployment of the CarService Workshop application on AWS EC2 using Kubernetes.
+
+
+![31_browser_clients_page_loaded.png](images/31_browser_clients_page_loaded.png)
+
+
+## 🏁 Conclusions
+This project successfully delivered a full end‑to‑end deployment of a .NET 7 CRUD application using Docker, Kubernetes, and AWS EC2.
+Throughout the process, multiple DevOps components were designed, configured, and validated — resulting in a fully functional cloud‑hosted environment.
+
+**Key achievements**
+-Containerized ASP.NET Core and MSSQL using multi‑stage Docker builds.
+
+-Automated database initialization with SQL scripts and mssql‑tools.
+
+-Deployed a complete Kubernetes stack (MSSQL + backend + PVC + Services).
+
+-Resolved real‑world issues involving networking, ports, DNS, and runtime mismatches.
+
+-Successfully exposed the application externally via NodePort and port‑forward.
+
+-Published Docker images to Docker Hub for portability and reuse.
+
+-Provisioned and configured AWS EC2 infrastructure with Terraform and Minikube.
+
+**Final result**
+The application runs reliably inside Kubernetes, connects to a persistent MSSQL database, and is accessible from the browser — demonstrating a complete, production‑style DevOps workflow.
+
+This project showcases strong practical skills in containerization, orchestration, cloud infrastructure, debugging, and deployment automation.
 
 
