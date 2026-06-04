@@ -135,6 +135,10 @@ Provisioning EKS clusters, configuring services and volumes, and deploying workl
 
 Using Helm charts and Kustomize overlays to package, template, and manage Kubernetes applications.
 
+Testing repo is here: - [`CarServiceWorkshop`](https://github.com/Stanley29/CarServiceWorkshop/).
+
+👉 Detailed report is available in [`project-16-terraform-k8s-helm-autodeploy/README.md`](project-16-terraform-k8s-helm-autodeploy/README.md).
+
 ---
 
 #### 📂 Project 16 — Advanced Kubernetes Delivery & EKS Operations

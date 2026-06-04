@@ -1,0 +1,17 @@
+namespace: carservice
+
+backend:
+  image: "serhii128/carserviceworkshop:latest"
+  port: 80
+  nodePort: 30080
+
+mssql:
+  image: "serhii128/mssql"
+  port: 1433
+  saPassword: "Qwerty123!"
+  pvcSize: "5Gi"
+
+initDb:
+  enabled: true
+  saPassword: "Qwerty123!"
+  databaseName: "CarServiceWorkshopDb"

@@ -1,0 +1,40 @@
+{{- if .Values.initDb.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-db
+  namespace: {{ .Values.namespace }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: init-db
+          image: mcr.microsoft.com/mssql-tools
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              echo "Waiting for MSSQL to be ready..."
+              for i in {1..30}; do
+                /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P '{{ .Values.initDb.saPassword }}' -Q "SELECT 1" && break
+                echo "MSSQL not ready yet, retrying..."
+                sleep 5
+              done
+
+              echo "Running init SQL script..."
+              /opt/mssql-tools/bin/sqlcmd \
+                -S mssql \
+                -U SA \
+                -P '{{ .Values.initDb.saPassword }}' \
+                -i /init/init.sql
+
+              echo "Database initialization completed."
+          volumeMounts:
+            - name: init-sql
+              mountPath: /init
+      restartPolicy: Never
+      volumes:
+        - name: init-sql
+          configMap:
+            name: init-sql
+  backoffLimit: 0
+{{- end }}

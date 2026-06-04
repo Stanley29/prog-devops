@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carservice-backend
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carservice-backend
+  template:
+    metadata:
+      labels:
+        app: carservice-backend
+    spec:
+      containers:
+        - name: carservice-backend
+          image: {{ .Values.backend.image }}
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=mssql,{{ .Values.mssql.port }};Database=CarServiceWorkshopDb;User Id=SA;Password={{ .Values.mssql.saPassword }};TrustServerCertificate=True;"

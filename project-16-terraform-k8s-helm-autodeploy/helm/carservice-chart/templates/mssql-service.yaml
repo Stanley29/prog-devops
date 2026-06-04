@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql
+  namespace: {{ .Values.namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: mssql
+  ports:
+    - name: sql
+      port: {{ .Values.mssql.port }}
+      targetPort: {{ .Values.mssql.port }}
