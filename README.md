@@ -113,6 +113,10 @@ Creating GitLab CI pipelines, configuring runners, defining jobs and stages, and
 
 Building workflows with GitHub Actions, using triggers, reusable actions, and automating development processes.
 
+Testing repo is here: - [`geography-application`](https://github.com/Stanley29/geography-application/).
+
+👉 Detailed report is available in [`project-12-github-actions/README.md`](project-12-github-actions/README.md).
+
 ---
 
 #### 📂 Project 13 — Kubernetes Fundamentals
